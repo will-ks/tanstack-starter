@@ -4,7 +4,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/_guest")({
   component: RouteComponent,
   beforeLoad: async ({ context }) => {
-    const REDIRECT_URL = "/dashboard";
+    const REDIRECT_URL = "/app";
 
     const user = await context.queryClient.ensureQueryData({
       ...authQueryOptions(),
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_guest")({
 
 function RouteComponent() {
   return (
-    <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+    <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
       <div className="w-full max-w-sm">
         <Outlet />
       </div>

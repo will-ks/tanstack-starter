@@ -2,18 +2,21 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true,
     "**/.tanstack/**/*": true,
+    "**/worker-configuration.d.ts": true,
     "pnpm-lock.yaml": true,
     "bun.lock": true
   },
   "files.watcherExclude": {
     "**/routeTree.gen.ts": true,
     "**/.tanstack/**/*": true,
+    "**/worker-configuration.d.ts": true,
     "pnpm-lock.yaml": true,
     "bun.lock": true
   },
   "search.exclude": {
     "**/routeTree.gen.ts": true,
     "**/.tanstack/**/*": true,
+    "**/worker-configuration.d.ts": true,
     "pnpm-lock.yaml": true,
     "bun.lock": true
   },
@@ -21,8 +24,18 @@
   // use LF line endings
   "files.eol": "\n",
 
-  // set prettier as default formatter for json, ts, tsx, js, jsx, html, css
+  // disable prettier, eslint, biome
+  "prettier.enable": false,
+  "eslint.enable": false,
+  "biome.enabled": false,
+  // enable oxlint + oxfmt
+  "oxc.enable": true,
+
+  // type-aware linting
+  "oxc.typeAware": true,
+
+  // set oxfmt as default formatter for json, ts, tsx, js, jsx, html, css
   "[json][jsonc][typescript][typescriptreact][javascript][javascriptreact][html][css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }

@@ -1,36 +1,45 @@
 {
-  "name": "monorepo-tanstarter",
+  "name": "tanstarter",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "dev:web": "turbo run dev --filter=@repo/web",
-    "lint": "turbo run lint",
-    "format": "prettier --write .",
-    "check-types": "turbo run check-types",
-    "check": "pnpm format && turbo run lint && turbo run check-types",
+    "lint": "oxlint --type-aware --type-check",
+    "lint:fix": "oxlint --type-aware --type-check --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "check": "turbo run quality",
     "prepare": "husky",
     "deps": "pnpm dlx taze@latest -Ilwr",
     "deps:major": "pnpm dlx taze@latest major -Ilwr",
+    "tanstack": "pnpm dlx @tanstack/cli@latest",
     "db": "pnpm --filter=@repo/db run db",
     "ui": "pnpm --filter=@repo/ui run ui",
     "ui:web": "pnpm --filter=@repo/web run ui",
-    "auth:secret": "pnpm dlx @better-auth/cli@latest secret",
-    "auth:generate": "pnpm dlx @better-auth/cli@latest generate --config ./packages/auth/src/auth.ts --y --output ./packages/db/src/schema/auth.schema.ts && prettier --write ./packages/db/src/schema/auth.schema.ts"
-  },
-  "lint-staged": {
-    "*": "prettier --ignore-unknown --write"
+    "auth:secret": "pnpm dlx auth@latest secret",
+    "auth:generate": "pnpm --filter=@repo/db run auth:generate",
+    "skills": "pnpm dlx skills@latest"
   },
   "devDependencies": {
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@tanstack/eslint-plugin-query": "catalog:",
+    "@tanstack/eslint-plugin-router": "catalog:",
+    "eslint-plugin-react-hooks": "catalog:",
+    "eslint-plugin-turbo": "catalog:",
     "husky": "catalog:",
     "lint-staged": "catalog:",
-    "prettier": "catalog:",
-    "prettier-plugin-organize-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
     "turbo": "catalog:"
   },
-  "packageManager": "pnpm@10.28.1",
+  "lint-staged": {
+    "*": "oxfmt --no-error-on-unmatched-pattern"
+  },
   "engines": {
-    "node": ">=22"
-  }
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@10.31.0"
 }

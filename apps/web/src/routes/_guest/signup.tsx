@@ -1,3 +1,4 @@
+import { RiGalleryView, RiLoader4Line } from "@remixicon/react";
 import authClient from "@repo/auth/auth-client";
 import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
@@ -5,8 +6,8 @@ import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { GalleryVerticalEnd, LoaderCircle } from "lucide-react";
 import { toast } from "sonner";
+
 import { SignInSocialButton } from "~/components/sign-in-social-button";
 
 export const Route = createFileRoute("/_guest/signup")({
@@ -29,16 +30,16 @@ function SignupForm() {
           onError: ({ error }) => {
             toast.error(error.message || "An error occurred while signing up.");
           },
-          onSuccess: () => {
+          onSuccess: async () => {
             queryClient.removeQueries({ queryKey: authQueryOptions().queryKey });
-            navigate({ to: redirectUrl });
+            await navigate({ to: redirectUrl });
           },
         },
       );
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isPending) return;
 
@@ -63,9 +64,9 @@ function SignupForm() {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
-            <a href="#" className="flex flex-col items-center gap-2 font-medium">
+            <a href="https://mugnavo.com" className="flex flex-col items-center gap-2 font-medium">
               <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                <GalleryVerticalEnd className="size-6" />
+                <RiGalleryView className="size-6" />
               </div>
               <span className="sr-only">Acme Inc.</span>
             </a>
@@ -117,14 +118,12 @@ function SignupForm() {
               />
             </div>
             <Button type="submit" className="mt-2 w-full" size="lg" disabled={isPending}>
-              {isPending && <LoaderCircle className="animate-spin" />}
+              {isPending && <RiLoader4Line className="animate-spin" />}
               {isPending ? "Signing up..." : "Sign up"}
             </Button>
           </div>
-          <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-            <span className="bg-background text-muted-foreground relative z-10 px-2">
-              Or
-            </span>
+          <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+            <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <SignInSocialButton
