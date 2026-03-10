@@ -130,7 +130,7 @@ The template is kept minimal by default, but is compatible with many third‑par
 
 ## License
 
-[MIT](./LICENSE)
+Code in this template is public domain via [Unlicense](./LICENSE). Feel free to remove or replace for your own project.
 
 ## Ecosystem
 
