@@ -45,7 +45,14 @@ export const Route = createRootRouteWithContext<{
         content: "A minimal monorepo starter template for 🏝️ TanStack Start",
       },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      // Replace with your icons here, or remove if you have a favicon.ico in public/
+      {
+        rel: "icon",
+        href: "https://mugnavo.com/favicon.ico",
+      },
+      { rel: "stylesheet", href: appCss },
+    ],
   }),
   component: RootComponent,
 });
