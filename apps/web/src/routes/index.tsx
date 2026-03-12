@@ -7,7 +7,12 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  // This is the intro component for TanStarter, which you may delete after creating the project.
-  // Have fun!
+  /**
+   * This is the intro component for TanStarter,
+   * which you may delete after creating the project,
+   * and replace it with your own homepage or landing page.
+   *
+   * Have fun!
+   */
   return <IntroPageDeleteMe />;
 }
