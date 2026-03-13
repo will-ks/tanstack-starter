@@ -1,4 +1,7 @@
-# [TanStarter Monorepo](https://github.com/mugnavo/tanstarter-monorepo)
+# [TanStarter Plus](https://github.com/mugnavo/tanstarter-plus)
+
+> [!IMPORTANT]
+> This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
 
 > [!WARNING]
 > This is still a work in progress. Mainly waiting on:
@@ -53,7 +56,7 @@ pnpm create mugnavo -t monorepo
 > [!IMPORTANT]
 > This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
 
-1. [Use this template](https://github.com/new?template_name=tanstarter-monorepo&template_owner=mugnavo) or create a project using our CLI:
+1. [Use this template](https://github.com/new?template_name=tanstarter-plus&template_owner=mugnavo) or create a project using our CLI:
 
    ```
    pnpm create mugnavo -t monorepo

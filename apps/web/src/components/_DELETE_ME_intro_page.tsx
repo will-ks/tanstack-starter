@@ -24,7 +24,7 @@ import { ThemeToggle } from "~/components/theme-toggle";
 export function IntroPageDeleteMe() {
   const [isCopied, setIsCopied] = useState(false);
 
-  const repoUrl = "https://github.com/mugnavo/tanstarter-monorepo";
+  const repoUrl = "https://github.com/mugnavo/tanstarter-plus";
   const tanstarterRepoUrl = "https://github.com/mugnavo/tanstarter";
   const cloneCommand = "pnpm create mugnavo -t monorepo";
   const fallbackStarsCount = 1000;
@@ -55,7 +55,7 @@ export function IntroPageDeleteMe() {
                 className="size-5 md:size-6"
               />
               <span className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
-                tanstarter-monorepo
+                tanstarter-plus
               </span>
             </a>
             <div className="flex items-center gap-2">
@@ -307,22 +307,22 @@ const CORE_BADGES: TechBadge[] = [
   {
     alt: "React version",
     href: "https://react.dev",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.react&label=react&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.react&label=react&style=flat-square",
   },
   {
     alt: "React Compiler version",
     href: "https://react.dev/learn/react-compiler",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22babel-plugin-react-compiler%22%5D&label=react-compiler&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22babel-plugin-react-compiler%22%5D&label=react-compiler&style=flat-square",
   },
   {
     alt: "TanStack Start version",
     href: "https://tanstack.com/start/latest",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22%40tanstack%2Freact-start%22%5D&label=tanstack-start&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22%40tanstack%2Freact-start%22%5D&label=tanstack-start&style=flat-square",
   },
   {
     alt: "TanStack Query version",
     href: "https://tanstack.com/query/latest",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22%40tanstack%2Freact-query%22%5D&label=tanstack-query&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22%40tanstack%2Freact-query%22%5D&label=tanstack-query&style=flat-square",
   },
 ];
 
@@ -330,17 +330,17 @@ const UI_BADGES: TechBadge[] = [
   {
     alt: "Tailwind CSS version",
     href: "https://tailwindcss.com/",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.tailwindcss&label=tailwindcss&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.tailwindcss&label=tailwindcss&style=flat-square",
   },
   {
     alt: "shadcn/ui version",
     href: "https://ui.shadcn.com/",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.shadcn&label=shadcn%2Fui&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.shadcn&label=shadcn%2Fui&style=flat-square",
   },
   {
     alt: "Base UI version",
     href: "https://base-ui.com/",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22%40base-ui%2Freact%22%5D&label=base-ui&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22%40base-ui%2Freact%22%5D&label=base-ui&style=flat-square",
   },
 ];
 
@@ -348,12 +348,12 @@ const DATA_BADGES: TechBadge[] = [
   {
     alt: "Drizzle ORM version",
     href: "https://orm.drizzle.team/",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22drizzle-orm%22%5D&label=drizzle-orm&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22drizzle-orm%22%5D&label=drizzle-orm&style=flat-square",
   },
   {
     alt: "Better Auth version",
     href: "https://www.better-auth.com/",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22better-auth%22%5D&label=better-auth&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog%5B%22better-auth%22%5D&label=better-auth&style=flat-square",
   },
 ];
 
@@ -361,12 +361,12 @@ const PLATFORM_BADGES: TechBadge[] = [
   {
     alt: "Vite version",
     href: "https://vite.dev",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.vite&label=vite&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.vite&label=vite&style=flat-square",
   },
   {
     alt: "Nitro version",
     href: "https://nitro.build/",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.nitro&label=nitro&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.nitro&label=nitro&style=flat-square",
   },
 ];
 
@@ -374,12 +374,12 @@ const TOOLING_BADGES: TechBadge[] = [
   {
     alt: "Oxlint version",
     href: "https://oxc.rs/docs/guide/usage/linter.html",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.oxlint&label=oxlint&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.oxlint&label=oxlint&style=flat-square",
   },
   {
     alt: "Oxfmt version",
     href: "https://oxc.rs/docs/guide/usage/formatter.html",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-monorepo%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.oxfmt&label=oxfmt&style=flat-square",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.oxfmt&label=oxfmt&style=flat-square",
   },
 ];
 
