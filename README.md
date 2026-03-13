@@ -15,14 +15,13 @@ A minimal monorepo starter for 🏝️ TanStack Start, based on [mugnavo/tanstar
 pnpm create mugnavo -t monorepo
 ```
 
-- [Turborepo](https://turborepo.com/) + pnpm workspaces with [catalogs](https://pnpm.io/catalogs)
+- [Vite Plus](https://viteplus.dev/) + pnpm workspaces with [catalogs](https://pnpm.io/catalogs)
 - [React 19](https://react.dev) + [React Compiler](https://react.dev/learn/react-compiler)
 - TanStack [Start](https://tanstack.com/start/latest) + [Router](https://tanstack.com/router/latest) + [Query](https://tanstack.com/query/latest) + [Form](https://tanstack.com/form/latest)
 - [Vite 8](https://vite.dev/) + [Nitro v3](https://nitro.build/)
 - [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) + [Base UI](https://base-ui.com/) (base-maia) + [Remix Icon](https://remixicon.com/)
 - [Drizzle ORM](https://orm.drizzle.team/) + PostgreSQL
 - [Better Auth](https://www.better-auth.com/)
-- [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) + [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html)
 
 ```sh
 ├── apps
@@ -33,7 +32,7 @@ pnpm create mugnavo -t monorepo
 │    └── ui                     # shadcn/ui primitives & utils
 ├── tooling
 │    └── tsconfig               # Shared TypeScript configuration
-├── turbo.json
+├── vite.config.ts
 ├── LICENSE
 └── README.md
 ```
@@ -50,6 +49,9 @@ pnpm create mugnavo -t monorepo
 - [Ecosystem](#ecosystem)
 
 ## Getting Started
+
+> [!IMPORTANT]
+> This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
 
 1. [Use this template](https://github.com/new?template_name=tanstarter-monorepo&template_owner=mugnavo) or create a project using our CLI:
 
@@ -93,6 +95,7 @@ Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/doc
 
 ## Issue watchlist
 
+- [Vite+ issues](https://github.com/voidzero-dev/vite-plus/issues) - Vite+ is in alpha.
 - [Router/Start issues](https://github.com/TanStack/router/issues) - TanStack Start is in RC.
 - [Devtools releases](https://github.com/TanStack/devtools/releases) - TanStack Devtools is in alpha and may still have breaking changes.
 - [Nitro v3 beta](https://nitro.build/blog/v3-beta) - This template is configured with Nitro v3 beta by default.
@@ -103,9 +106,9 @@ Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/doc
 
 #### Git hooks
 
-We use [Husky](https://typicode.github.io/husky/) to run git hooks with the following tools:
+We use [Vite+ Commit Hooks](https://viteplus.dev/guide/commit-hooks) to run git hooks with the following tools:
 
-- [lint-staged](https://github.com/lint-staged/lint-staged) - Run Oxfmt to format staged files on commit (`pre-commit`).
+- [`vp staged`](https://viteplus.dev/guide/commit-hooks#configuration) - Run Oxfmt to format staged files on commit (`pre-commit`).
 - [commitlint](https://commitlint.js.org/) - Enforce [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages (`commit-msg`).
 
 #### Scripts
@@ -118,7 +121,7 @@ This template is configured for **[pnpm](https://pnpm.io/)** by default. Check t
 - **`deps`** - Selectively upgrade dependencies via taze.
 
 > [!NOTE]
-> To switch to another package manager (e.g., bun or npm), update the commands in your `package.json` files, [`dev.sh`](./dev.sh), and git hooks in [`.husky/`](./.husky/). You'll also need to replace or remove [`pnpm-workspace.yaml`](./pnpm-workspace.yaml), which uses pnpm [catalogs](https://pnpm.io/catalogs). Bun and Yarn have their own equivalents, but the file formats may differ.
+> To switch to another package manager (e.g., bun or npm), update the commands in your `package.json` files and [`dev.sh`](./dev.sh). You'll also need to replace or remove [`pnpm-workspace.yaml`](./pnpm-workspace.yaml), which uses pnpm [catalogs](https://pnpm.io/catalogs). Bun and Yarn have their own equivalents, but the file formats may differ.
 
 #### Utilities
 
