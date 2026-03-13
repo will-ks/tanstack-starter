@@ -359,9 +359,9 @@ const DATA_BADGES: TechBadge[] = [
 
 const PLATFORM_BADGES: TechBadge[] = [
   {
-    alt: "Vite version",
-    href: "https://vite.dev",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.vite&label=vite&style=flat-square",
+    alt: "Vite+ version",
+    href: "https://viteplus.dev",
+    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.vite-plus&label=vite-plus&style=flat-square",
   },
   {
     alt: "Nitro version",
@@ -370,17 +370,4 @@ const PLATFORM_BADGES: TechBadge[] = [
   },
 ];
 
-const TOOLING_BADGES: TechBadge[] = [
-  {
-    alt: "Oxlint version",
-    href: "https://oxc.rs/docs/guide/usage/linter.html",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.oxlint&label=oxlint&style=flat-square",
-  },
-  {
-    alt: "Oxfmt version",
-    href: "https://oxc.rs/docs/guide/usage/formatter.html",
-    src: "https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fmugnavo%2Ftanstarter-plus%2Fmain%2Fpnpm-workspace.yaml&query=%24.catalog.oxfmt&label=oxfmt&style=flat-square",
-  },
-];
-
-const TECH_BADGE_ROWS = [CORE_BADGES, UI_BADGES, DATA_BADGES, PLATFORM_BADGES, TOOLING_BADGES];
+const TECH_BADGE_ROWS = [CORE_BADGES, UI_BADGES, DATA_BADGES, PLATFORM_BADGES];
