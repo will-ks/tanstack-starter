@@ -20,15 +20,15 @@ $COMPOSE_CMD up -d
 
 # Determine which dev command to run based on parameters
 if [ -n "$1" ]; then
-    DEV_CMD="dev:$1"
+    DEV_CMD="dev --filter=@repo/$1"
     echo "Starting $1 development server..."
 else
-    DEV_CMD="dev"
+    DEV_CMD="dev --recursive"
     echo "Starting all development servers..."
 fi
 
 # Start the development server
-pnpm $DEV_CMD
+vp run $DEV_CMD
 
 # Cleanup function
 cleanup() {

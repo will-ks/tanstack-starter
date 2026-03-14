@@ -7,7 +7,7 @@ import { relations } from "./schema/relations";
 
 const { relations: authRelations, ...schema } = schemas;
 
-const client = postgres(process.env.SERVER_DATABASE_URL as string);
+const client = postgres(process.env.DATABASE_URL as string);
 
 export const db = drizzle({
   client,

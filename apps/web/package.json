@@ -7,7 +7,7 @@
     "build": "vp build",
     "preview": "vp preview",
     "start": "node .output/server/index.mjs",
-    "ui": "pnpm dlx shadcn@latest"
+    "ui": "vpx shadcn@latest"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "catalog:",

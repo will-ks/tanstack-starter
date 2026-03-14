@@ -7,7 +7,7 @@ import { tanstackStartCookies } from "better-auth/tanstack-start";
 
 export const auth = betterAuth({
   baseURL: process.env.VITE_BASE_URL,
-  secret: process.env.SERVER_AUTH_SECRET,
+  secret: process.env.BETTER_AUTH_SECRET,
   telemetry: {
     enabled: false,
   },
@@ -30,12 +30,12 @@ export const auth = betterAuth({
   // https://www.better-auth.com/docs/concepts/oauth
   socialProviders: {
     github: {
-      clientId: process.env.SERVER_GITHUB_CLIENT_ID!,
-      clientSecret: process.env.SERVER_GITHUB_CLIENT_SECRET!,
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     },
     google: {
-      clientId: process.env.SERVER_GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.SERVER_GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
   },
 

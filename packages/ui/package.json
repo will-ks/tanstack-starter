@@ -10,7 +10,7 @@
     "./components/*": "./components/*.tsx"
   },
   "scripts": {
-    "ui": "pnpm dlx shadcn@latest"
+    "ui": "vpx shadcn@latest"
   },
   "dependencies": {
     "@base-ui/react": "catalog:",

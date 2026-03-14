@@ -4,9 +4,29 @@ import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
-import { defineConfig } from "vite";
+import { defineConfig } from "vite-plus";
 
 export default defineConfig({
+  run: {
+    // Vite Task
+    // https://viteplus.dev/config/run
+    // https://viteplus.dev/guide/run
+    // https://viteplus.dev/guide/cache
+    tasks: {
+      "cache:build": {
+        // When deploying, use "vp cache:build" as the build command
+        command: "vp build",
+        env: ["NODE_ENV", "VITE_*"],
+        input: [
+          { auto: true },
+          "!**/.output/**",
+          "!**/dist/**",
+          "!**/*.tsbuildinfo",
+          "!**/node_modules/.vite/**",
+        ],
+      },
+    },
+  },
   resolve: {
     tsconfigPaths: true,
   },

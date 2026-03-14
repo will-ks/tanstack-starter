@@ -11,7 +11,7 @@ Don't build after every change. If lint passes; assume changes work.
 
 ## TanStack CLI
 
-Use `pnpm tanstack` (which is aliased to `pnpm dlx @tanstack/cli@latest` in `package.json`) to look up TanStack documentation. Always pass `--json` for machine-readable output.
+Use `pnpm tanstack` (which is aliased to `vpx @tanstack/cli@latest` in `package.json`) to look up TanStack documentation. Always pass `--json` for machine-readable output.
 
 ```bash
 # List TanStack libraries (optionally filter by --group state|headlessUI|performance|tooling)
@@ -32,4 +32,4 @@ Vitest hasn't been set up yet. Prefer lint checks for now.
 
 ## Formatting
 
-Oxfmt (via Vite+) is configured for consistent code formatting via `pnpm format`. It runs automatically on commit via Vite+ pre-commit hooks, so manual formatting is not necessary.
+Oxfmt (via Vite+) is configured for consistent code formatting via `vp fmt`. It runs automatically on commit via Vite+ pre-commit hooks, so manual formatting is not necessary.

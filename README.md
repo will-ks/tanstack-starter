@@ -83,9 +83,9 @@ pnpm create mugnavo -t monorepo
 > If you want to run a local Postgres instance via Docker Compose with the dev server, you can use the [dev.sh](./dev.sh) script:
 >
 > ```sh
-> ./dev.sh # runs "pnpm dev"
+> ./dev.sh # runs "vp run dev --recursive"
 > # or
-> ./dev.sh web # runs pnpm dev:web
+> ./dev.sh web # runs "vp run dev --filter=@repo/web"
 > ```
 
 ## Deploying to production
@@ -95,6 +95,10 @@ The [vite config](./apps/web/vite.config.ts#L15-L16) is currently configured to 
 While Nitro provides a great multi-provider default, the official [@netlify/vite-plugin-tanstack-start](https://npmx.dev/package/@netlify/vite-plugin-tanstack-start) is also available for Netlify deployments.
 
 Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/docs/framework/react/guide/hosting) for deploying to other platforms.
+
+### Build caching
+
+Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task. A `cache:build` task is configured in [`apps/web/vite.config.ts`](./apps/web/vite.config.ts) that can enable faster builds via caching. When deploying, use `vp run cache:build` as the build command to take advantage of this feature.
 
 ## Issue watchlist
 
@@ -124,7 +128,7 @@ This template is configured for **[pnpm](https://pnpm.io/)** by default. Check t
 - **`deps`** - Selectively upgrade dependencies via taze.
 
 > [!NOTE]
-> To switch to another package manager (e.g., bun or npm), update the commands in your `package.json` files and [`dev.sh`](./dev.sh). You'll also need to replace or remove [`pnpm-workspace.yaml`](./pnpm-workspace.yaml), which uses pnpm [catalogs](https://pnpm.io/catalogs). Bun and Yarn have their own equivalents, but the file formats may differ.
+> To switch to another package manager (e.g., bun or npm), you'll need to replace or remove [`pnpm-workspace.yaml`](./pnpm-workspace.yaml), which uses pnpm [catalogs](https://pnpm.io/catalogs). Bun and Yarn have their own equivalents, but the file formats may differ.
 
 #### Utilities
 
