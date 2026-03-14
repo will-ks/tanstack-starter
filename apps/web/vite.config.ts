@@ -12,14 +12,9 @@ export default defineConfig({
     // https://viteplus.dev/config/run
     // https://viteplus.dev/guide/run
     // https://viteplus.dev/guide/cache
-    cache: {
-      // Disable caching for now, since file output file caching does not work yet:
-      // https://github.com/mugnavo/tanstarter-plus/issues/8
-      tasks: false,
-    },
     tasks: {
       "cache:build": {
-        // When deploying, use "vp cache:build" as the build command
+        // When deploying, use "vp run cache:build" as the build command
         command: "vp build",
         env: ["NODE_ENV", "VITE_*"],
         input: [

@@ -10,7 +10,13 @@ export default defineConfig({
   // Vite Task
   // https://viteplus.dev/config/run
   // https://viteplus.dev/guide/run
-  run: {},
+  run: {
+    cache: {
+      // Disable caching for now, since file output file caching does not work yet:
+      // https://github.com/mugnavo/tanstarter-plus/issues/8
+      tasks: false,
+    },
+  },
 
   // Oxfmt - https://oxc.rs/docs/guide/usage/formatter/config.html
   fmt: {
