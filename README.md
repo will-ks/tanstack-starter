@@ -4,11 +4,9 @@
 > This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
 
 > [!WARNING]
-> This is still a work in progress. Mainly waiting on:
+> See the [issue watchlist](#issue-watchlist) below. Right now, we're mainly waiting on:
 >
-> - [ ] Drizzle Relations v2 support in Better Auth (https://github.com/better-auth/better-auth/pull/6913)
->
-> Also see the [issue watchlist](#issue-watchlist) below.
+> - Drizzle v1 / relations v2 in Better Auth (https://github.com/better-auth/better-auth/pull/6913)
 
 <!-- scaffold:description -->
 
@@ -102,12 +100,12 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 
 ## Issue watchlist
 
-- [Vite+ issues](https://github.com/voidzero-dev/vite-plus/issues) - Vite+ is in alpha.
 - [Router/Start issues](https://github.com/TanStack/router/issues) - TanStack Start is in RC.
 - [Devtools releases](https://github.com/TanStack/devtools/releases) - TanStack Devtools is in alpha and may still have breaking changes.
 - [Nitro v3 beta](https://nitro.build/blog/v3-beta) - This template is configured with Nitro v3 beta by default.
 - [Drizzle ORM v1 Beta](https://orm.drizzle.team/docs/relations-v1-v2) - Drizzle ORM v1 is in beta with relations v2.
 - [Better Auth experimental branch](https://github.com/better-auth/better-auth/pull/6913) - We're using a separate branch of Better Auth v1.5 that supports Drizzle relations v2.
+- [Vite+ issues](https://github.com/voidzero-dev/vite-plus/issues) - Vite+ is in alpha.
 
 ## Goodies
 
@@ -115,7 +113,7 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 
 We use [Vite+ Commit Hooks](https://viteplus.dev/guide/commit-hooks) to run git hooks with the following tools:
 
-- [`vp staged`](https://viteplus.dev/guide/commit-hooks#configuration) - Run Oxfmt to format staged files on commit (`pre-commit`).
+- [`vp staged`](https://viteplus.dev/guide/commit-hooks#vp-staged) - Run Oxfmt to format staged files on commit (`pre-commit`).
 
 #### Scripts
 
