@@ -20,6 +20,10 @@ export default defineConfig({
         input: [
           { auto: true },
           "!**/.output/**",
+          "!**/.vercel/**",
+          "!**/.netlify/**",
+          "!**/build/**",
+          "!**/.wrangler/**",
           "!**/dist/**",
           "!**/*.tsbuildinfo",
           "!**/node_modules/.vite/**",

@@ -6,7 +6,7 @@
     "build": "vp run cache:build --recursive",
     "build:web": "vp run web#cache:build",
     "dev": "vp run dev --recursive",
-    "dev:web": "vp run web#dev",
+    "dev:web": "vp run --filter=@repo/web dev",
     "lint": "vp lint --type-aware --type-check",
     "lint:fix": "vp lint --type-aware --type-check --fix",
     "format": "vp fmt",
