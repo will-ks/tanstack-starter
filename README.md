@@ -116,7 +116,6 @@ Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task.
 We use [Vite+ Commit Hooks](https://viteplus.dev/guide/commit-hooks) to run git hooks with the following tools:
 
 - [`vp staged`](https://viteplus.dev/guide/commit-hooks#configuration) - Run Oxfmt to format staged files on commit (`pre-commit`).
-- [commitlint](https://commitlint.js.org/) - Enforce [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages (`commit-msg`).
 
 #### Scripts
 
