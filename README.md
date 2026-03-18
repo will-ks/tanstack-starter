@@ -147,6 +147,6 @@ Code in this template is public domain via [Unlicense](./LICENSE). Feel free to 
 
 ## Ecosystem
 
-- [TanStack CLI](https://tanstack.com/cli/latest) - The official CLI for TanStack, which includes docs search commands for agent workflows.
+- [@tanstack/intent](https://tanstack.com/intent/latest/docs/getting-started/quick-start-consumers) - Up-to-date skills for your AI agents, auto-synchronized from your installed dependencies.
 - [awesome-tanstack-start](https://github.com/Balastrong/awesome-tanstack-start) - A curated list of awesome resources for TanStack Start.
 - [shadcn/ui Directory](https://ui.shadcn.com/docs/directory), [MCP](https://ui.shadcn.com/docs/mcp), [shoogle.dev](https://shoogle.dev/) - Component directories & registries for shadcn/ui.
