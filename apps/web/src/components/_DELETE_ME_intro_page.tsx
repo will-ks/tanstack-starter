@@ -246,27 +246,43 @@ function RepoStarsBadge({
     enabled: typeof window !== "undefined",
   });
 
+  const formattedStarsCount = formatGitHubStars(data ?? fallbackStarsCount);
+  const starsLabel = `${formattedStarsCount}${data ? "" : "+"} stars on GitHub`;
+
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`${data ? data.toLocaleString() : `${fallbackStarsCount.toLocaleString()}+`} stars on GitHub`}
-      title={`${data ? data.toLocaleString() : `${fallbackStarsCount.toLocaleString()}+`} stars on GitHub`}
-      className="inline-flex items-stretch overflow-hidden rounded-md border border-border bg-card text-xs text-muted-foreground hover:brightness-90 sm:text-sm"
+      aria-label={starsLabel}
+      title={starsLabel}
+      className="inline-flex items-center gap-2 overflow-hidden rounded-md border border-border bg-card px-2 py-1.5 font-mono text-xs text-foreground hover:brightness-90 sm:text-sm"
     >
-      <span className="inline-flex items-center border-r border-border bg-muted px-2 font-medium">
-        <StarIcon
-          fill="currentColor"
-          strokeWidth={0}
-          className="size-4 text-yellow-500 sm:size-3.5 dark:text-yellow-300"
-        />
-      </span>
-      <span className="inline-flex items-center px-2 py-1.5 font-mono text-foreground sm:px-2.5">
-        {data ? data.toLocaleString() : `${fallbackStarsCount.toLocaleString()}+`}
-      </span>
+      <SiGithub className="size-4" />
+      {formattedStarsCount}
+      {data ? "" : "+"}
+      <StarIcon
+        fill="currentColor"
+        strokeWidth={0}
+        className="size-4 text-yellow-500 dark:text-yellow-300"
+      />
     </a>
   );
+}
+
+function formatGitHubStars(count: number) {
+  if (count < 1000) {
+    return count.toLocaleString();
+  }
+
+  const compactValue = count / 1000;
+  const roundedValue =
+    compactValue >= 10 ? Math.round(compactValue) : Math.round(compactValue * 10) / 10;
+
+  return `${roundedValue.toLocaleString(undefined, {
+    maximumFractionDigits: compactValue >= 10 ? 0 : 1,
+    minimumFractionDigits: 0,
+  })}k`;
 }
 
 async function fetchRepoStars({ signal }: { signal: AbortSignal | undefined }) {
