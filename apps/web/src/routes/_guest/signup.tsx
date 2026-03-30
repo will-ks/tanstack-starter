@@ -1,5 +1,5 @@
 import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
-import authClient from "@repo/auth/auth-client";
+import { authClient } from "@repo/auth/auth-client";
 import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
