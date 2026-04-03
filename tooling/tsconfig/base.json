@@ -14,7 +14,6 @@
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "strictNullChecks": true,
-    "types": ["node", "vite/client"]
+    "strictNullChecks": true
   }
 }
