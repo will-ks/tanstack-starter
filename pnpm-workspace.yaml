@@ -15,7 +15,7 @@ catalog:
   "@tanstack/devtools-vite": ^0.6.0
   "@tanstack/eslint-plugin-query": ^5.96.2
   "@tanstack/eslint-plugin-router": ^1.161.6
-  "@tanstack/react-devtools": ^0.10.1
+  "@tanstack/react-devtools": ^0.10.2
   "@tanstack/react-form-devtools": ^0.2.20
   "@tanstack/react-form-start": ^1.28.6
   "@tanstack/react-query": ^5.96.2
@@ -44,7 +44,7 @@ catalog:
   postgres: ^3.4.9
   react: ^19.2.4
   react-dom: ^19.2.4
-  shadcn: ^4.1.2
+  shadcn: ^4.2.0
   sonner: ^2.0.7
   tailwind-merge: ^3.5.0
   tailwindcss: ^4.2.2
