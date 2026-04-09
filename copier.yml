@@ -1,0 +1,10 @@
+# questions
+project_name:
+  type: str
+  help: What is your project name?
+
+_exclude:
+  - "copier.yaml"
+  - "copier.yml"
+  - ".git"
+  - "pnpm-lock.yaml"
