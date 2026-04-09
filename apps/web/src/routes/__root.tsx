@@ -50,7 +50,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       // Replace with your icons here, or remove if you have a favicon.ico in public/
       {
         rel: "icon",
-        href: "https://mugnavo.com/favicon.ico",
+        href: "/favicon.ico",
       },
       { rel: "stylesheet", href: appCss },
     ],

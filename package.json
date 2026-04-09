@@ -1,5 +1,5 @@
 {
-  "name": "tanstarter",
+  "name": "tanstack-starter",
   "private": true,
   "type": "module",
   "scripts": {
@@ -36,6 +36,5 @@
   "engines": {
     "node": ">=24"
   },
-  "packageManager": "pnpm@10.33.0",
-  "generator": "create-mugnavo"
+  "packageManager": "pnpm@10.33.0"
 }

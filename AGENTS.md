@@ -1,5 +1,7 @@
 # Agent Guidelines
 
+**Commit:** 2521b24 | **Branch:** main | **Node:** >=24 | **PM:** pnpm@10.33.0
+
 ## Essentials
 
 - Stack: TypeScript + React (TanStack Start) in a pnpm + Vite+ monorepo, with ZenStack v3, shadcn/ui, and Better Auth.
@@ -8,6 +10,72 @@
 - Use shared pnpm catalog versions (`pnpm-workspace.yaml`) via `catalog:`.
 - For TanStack libraries, consult latest docs via `pnpm tanstack <command>` (see [Workflow](.agents/workflow.md#tanstack-cli)).
 - Don't build after every little change. If `pnpm lint` passes; assume changes work.
+
+## Structure
+
+```
+.
+├── apps/web/                  # TanStack Start app (routes, components, router)
+│   └── src/routes/            # File-based routing
+│       ├── __root.tsx         # Root layout, devtools, theme
+│       ├── _auth/             # Protected routes (beforeLoad guard)
+│       ├── _guest/            # Guest-only routes (login, signup)
+│       └── api/auth/          # Better Auth API handler
+├── packages/
+│   ├── auth/                  # @repo/auth - Better Auth + TanStack integration
+│   ├── db/                    # @repo/db - ZenStack ORM + PostgreSQL
+│   └── ui/                    # @repo/ui - shadcn/ui components & utilities
+├── tooling/tsconfig/          # @repo/tsconfig - shared TS base config
+└── .agents/                   # Detailed topic guides
+```
+
+## Where to Look
+
+| Task                       | Location                                        | Notes                                                                |
+| -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------- |
+| Add a page/route           | `apps/web/src/routes/`                          | File-based routing; `_auth/` for protected, `_guest/` for guest-only |
+| Add shared UI component    | `packages/ui/components/`                       | `pnpm ui add <name>`; exported as `@repo/ui/components/<name>`       |
+| Add app-specific component | `apps/web/src/components/`                      | Local to web app                                                     |
+| Edit auth config           | `packages/auth/src/auth.ts`                     | Better Auth server config (social providers, session)                |
+| Edit auth middleware       | `packages/auth/src/tanstack/middleware.ts`      | `authMiddleware`, `freshAuthMiddleware`                              |
+| Edit DB schema             | `packages/db/zenstack/schema.zmodel`            | Then run `pnpm db` to regenerate                                     |
+| Add server function        | Co-locate with route or in `packages/`          | Prefix with `$`, wrap in `createServerFn`                            |
+| Add TanStack query         | Near the consuming code or in auth `queries.ts` | Use `queryOptions()` pattern                                         |
+| Lint/format config         | `vite.config.ts` (root)                         | Oxfmt + Oxlint via Vite+                                             |
+| Vite/build config          | `apps/web/vite.config.ts`                       | TanStack Start, Nitro, React Compiler                                |
+
+## Commands
+
+```bash
+pnpm dev          # Dev server (all packages)
+pnpm dev:web      # Dev server (web only)
+pnpm lint         # Type-check + type-aware lint (Oxlint)
+pnpm check        # Format + lint + type-check
+pnpm build        # Production build (all)
+pnpm db           # Generate ZenStack types (run after schema changes)
+pnpm db:push      # Push schema to database
+pnpm ui           # shadcn/ui CLI (adds to packages/ui)
+pnpm ui:web       # shadcn/ui CLI (adds to apps/web)
+```
+
+## Conventions
+
+- **Oxfmt** (not Prettier): double quotes, 100 char width, trailing commas, LF endings
+- **Oxlint** (not ESLint): type-aware linting with TanStack Router/Query plugins + React Compiler rules
+- **Path aliases**: `~/` → `apps/web/src/`, `@repo/*` → workspace packages
+- **Icon imports**: `lucide-react` with `Icon` suffix (`Loader2Icon`), brand icons from `@icons-pack/react-simple-icons`
+- **Server functions**: prefix with `$` (`$getUser`), static imports only (never dynamic)
+- **Query pattern**: `queryOptions()` factories, `ensureQueryData` in loaders
+- **Tests**: Not set up yet. Lint is the validation gate.
+
+## Anti-Patterns
+
+- **NEVER** use `as`, `satisfies`, or manual generic params — infer types instead (see `.agents/typescript.md`)
+- **NEVER** dynamically import server functions — use static imports
+- **NEVER** use pnpm/npm/yarn directly — use `vp` commands (see `.agents/vite-plus.md`)
+- **NEVER** edit generated files in `packages/db/zenstack/` (except `schema.zmodel`)
+- **NEVER** skip `authMiddleware` on protected server functions, even inside `_auth` routes
+- Generic type params must be `T`-prefixed: `TArgs`, `TReturn`, `TData`
 
 ## Topic-specific Guidelines
 
@@ -35,14 +103,6 @@ skills:
 Use `pnpm tanstack` (which is aliased to `vpx @tanstack/cli@latest` in `package.json`) to look up TanStack documentation. Always pass `--json` for machine-readable output.
 
 ```bash
-# List TanStack libraries (optionally filter by --group state|headlessUI|performance|tooling)
-pnpm tanstack libraries --json
-
-# Fetch a specific doc page
 pnpm tanstack doc router framework/react/guide/data-loading --json
-pnpm tanstack doc query framework/react/overview --docs-version v5 --json
-
-# Search docs (optionally filter by --library, --framework, --limit)
 pnpm tanstack search-docs "server functions" --library start --json
-pnpm tanstack search-docs "loaders" --library router --framework react --json
 ```

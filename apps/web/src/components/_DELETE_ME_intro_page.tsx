@@ -1,12 +1,7 @@
-import { SiGithub } from "@icons-pack/react-simple-icons";
 import { useAuthSuspense } from "@repo/auth/tanstack/hooks";
 import { Button } from "@repo/ui/components/button";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { CheckIcon, CopyIcon, ExternalLinkIcon, StarIcon, TerminalIcon } from "lucide-react";
 import { Suspense } from "react";
-import { useState } from "react";
-import { toast } from "sonner";
 
 import { SignOutButton } from "~/components/sign-out-button";
 import { ThemeToggle } from "~/components/theme-toggle";
@@ -16,44 +11,15 @@ import { ThemeToggle } from "~/components/theme-toggle";
  * Have fun!
  */
 export function IntroPageDeleteMe() {
-  const [isCopied, setIsCopied] = useState(false);
-
-  const repoUrl = "https://github.com/mugnavo/tanstarter-plus";
-  const tanstarterRepoUrl = "https://github.com/mugnavo/tanstarter";
-  const cloneCommand = "pnpm create mugnavo -t monorepo";
-  const fallbackStarsCount = 1000;
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(cloneCommand);
-      setIsCopied(true);
-      toast.success("Command copied to clipboard", { position: "top-center", richColors: false });
-
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 4000);
-    } catch {
-      toast.error("Failed to copy command", { position: "top-center" });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-3xl px-4 pt-16 pb-12 md:pt-32">
         <header className="mb-8">
           <div className="mb-6 flex items-center justify-between">
-            <a href={repoUrl} className="flex items-center gap-2 hover:underline">
-              <img
-                src="https://mugnavo.com/favicon-32x32.png"
-                alt="Mugnavo logo"
-                className="size-5 md:size-6"
-              />
-              <span className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
-                tanstarter-plus
-              </span>
-            </a>
+            <span className="text-lg font-semibold tracking-tight text-foreground md:text-xl">
+              tanstack-starter
+            </span>
             <div className="flex items-center gap-2">
-              <RepoStarsBadge href={tanstarterRepoUrl} fallbackStarsCount={fallbackStarsCount} />
               <ThemeToggle />
             </div>
           </div>
@@ -68,36 +34,6 @@ export function IntroPageDeleteMe() {
             without the extra boilerplate.
           </p>
         </header>
-
-        <section className="mb-12">
-          <div className="rounded-xl border border-border bg-card p-1 shadow-2xl">
-            <div className="group flex items-center justify-between rounded-lg border border-border bg-card p-4">
-              <div className="flex items-center gap-3 overflow-hidden">
-                <TerminalIcon className="hidden size-4 shrink-0 text-muted-foreground/70 sm:inline" />
-                <code className="overflow-hidden font-mono text-sm text-ellipsis whitespace-nowrap text-primary md:text-base">
-                  <span className="mr-2 hidden text-muted-foreground/70 select-none sm:inline">
-                    $
-                  </span>
-                  {/* oxlint-disable-next-line jsx_a11y/click-events-have-key-events jsx_a11y/no-static-element-interactions */}
-                  <span className="select-all" onClick={copyToClipboard}>
-                    {cloneCommand}
-                  </span>
-                </code>
-              </div>
-              <button
-                onClick={copyToClipboard}
-                className="ml-4 shrink-0 rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                title="Copy command"
-              >
-                {isCopied ? (
-                  <CheckIcon className="size-5 text-primary" />
-                ) : (
-                  <CopyIcon className="size-5" />
-                )}
-              </button>
-            </div>
-          </div>
-        </section>
 
         <Suspense fallback={<div className="py-6">Loading session...</div>}>
           <UserAction />
@@ -151,27 +87,6 @@ export function IntroPageDeleteMe() {
 
           <p>Happy coding!</p>
         </section>
-
-        <footer className="flex flex-col items-center justify-between gap-6 text-sm md:flex-row">
-          <a
-            href={repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <SiGithub className="size-5" />
-            GitHub
-          </a>
-          <a
-            href="https://mugnavo.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-primary underline decoration-border transition-all hover:decoration-primary"
-          >
-            Mugnavo
-            <ExternalLinkIcon className="size-4" />
-          </a>
-        </footer>
       </div>
     </div>
   );
@@ -229,93 +144,6 @@ function Feature({ title, desc }: { title: string; desc: string }) {
       <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
     </div>
   );
-}
-
-function RepoStarsBadge({
-  href,
-  fallbackStarsCount,
-}: {
-  href: string;
-  fallbackStarsCount: number;
-}) {
-  const { data } = useQuery({
-    queryKey: ["github-repo-stars"],
-    queryFn: ({ signal }) => fetchRepoStars({ signal }),
-    staleTime: 1000 * 60 * 30,
-    retry: 1,
-    enabled: typeof window !== "undefined",
-  });
-
-  const count = data || fallbackStarsCount;
-  const formattedStarsCount = formatGitHubStars(count);
-  const starsLabel = `${count.toLocaleString()}${data ? "" : "+"} stars on GitHub`;
-
-  return (
-    <Button
-      render={
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={starsLabel}
-          title={starsLabel}
-        />
-      }
-      nativeButton={false}
-      variant="secondary"
-      className="tracking-wide"
-    >
-      <SiGithub className="size-4" />
-      {formattedStarsCount}
-      {data ? "" : "+"}
-      <StarIcon
-        fill="currentColor"
-        strokeWidth={0}
-        className="size-4 text-yellow-500 dark:text-yellow-300"
-      />
-    </Button>
-  );
-}
-
-function formatGitHubStars(count: number) {
-  if (count < 1000) {
-    return count.toLocaleString();
-  }
-
-  const compactValue = count / 1000;
-  const roundedValue =
-    compactValue >= 10 ? Math.round(compactValue) : Math.round(compactValue * 10) / 10;
-
-  return `${roundedValue.toLocaleString(undefined, {
-    maximumFractionDigits: compactValue >= 10 ? 0 : 1,
-    minimumFractionDigits: 0,
-  })}k`;
-}
-
-async function fetchRepoStars({ signal }: { signal: AbortSignal | undefined }) {
-  const response = await fetch("https://api.github.com/repos/mugnavo/tanstarter", {
-    signal,
-    headers: {
-      Accept: "application/vnd.github+json",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch repository stars");
-  }
-
-  const data: unknown = await response.json();
-
-  if (
-    typeof data !== "object" ||
-    data === null ||
-    !("stargazers_count" in data) ||
-    typeof data.stargazers_count !== "number"
-  ) {
-    throw new Error("Invalid repository response");
-  }
-
-  return data.stargazers_count;
 }
 
 interface TechBadge {

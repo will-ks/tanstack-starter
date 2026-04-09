@@ -1,4 +1,4 @@
-# [TanStarter Plus](https://github.com/mugnavo/tanstarter-plus)
+# Tanstack Starter
 
 > [!IMPORTANT]
 > This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
@@ -6,10 +6,6 @@
 <!-- scaffold:description -->
 
 A minimal monorepo starter for 🏝️ TanStack Start, based on [mugnavo/tanstarter](https://github.com/mugnavo/tanstarter).
-
-```
-pnpm create mugnavo -t monorepo
-```
 
 - [Vite Plus](https://viteplus.dev/) + pnpm workspaces with [catalogs](https://pnpm.io/catalogs)
 - [React 19](https://react.dev) + [React Compiler](https://react.dev/learn/react-compiler)
@@ -49,11 +45,7 @@ pnpm create mugnavo -t monorepo
 > [!IMPORTANT]
 > This template requires [Vite+ `vp`](https://viteplus.dev/guide/#install-vp) and [pnpm](https://pnpm.io/installation) to be installed.
 
-1. [Use this template](https://github.com/new?template_name=tanstarter-plus&template_owner=mugnavo) or create a project using our CLI:
-
-   ```
-   pnpm create mugnavo -t monorepo
-   ```
+1. Clone the repo
 
 2. Create `.env` files in [`/apps/web`](./apps/web/.env.example) and [`/packages/db`](./packages/db/.env.example) based on their respective `.env.example` files.
 
@@ -93,9 +85,6 @@ Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/doc
 
 Vite+ has support for [caching](https://viteplus.dev/guide/cache) via Vite Task. A `build` task is configured in [`apps/web/vite.config.ts`](./apps/web/vite.config.ts) that can enable faster builds via caching. When deploying, use `vp run build` as the build command.
 
-> [!IMPORTANT]
-> Task caching is **_currently disabled_** in the root [`vite.config.ts`](./vite.config.ts#L15-L20) since Vite+ only replays terminal output for now, not build artifacts. If your platform preserves build outputs between deployments, you can re-enable it. See [this issue](https://github.com/mugnavo/tanstarter-plus/issues/8) for more details.
-
 ## Issue watchlist
 
 - [Router/Start issues](https://github.com/TanStack/router/issues) - TanStack Start is in RC.
@@ -132,10 +121,6 @@ This template is configured for **[pnpm](https://pnpm.io/)** by default. Check t
 
 - [`/auth/src/tanstack/middleware.ts`](./packages/auth/src/tanstack/middleware.ts) - Sample middleware for enforcing authentication on server functions & API routes.
 - [`/web/src/components/theme-toggle.tsx`](./apps/web/src/components/theme-toggle.tsx), [`/ui/lib/theme-provider.tsx`](./packages/ui/lib/theme-provider.tsx) - A theme toggle and provider for toggling between light and dark mode.
-
-## License
-
-Code in this template is public domain via [Unlicense](./LICENSE). Feel free to remove or replace for your own project.
 
 ## Ecosystem
 
