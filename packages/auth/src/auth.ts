@@ -1,7 +1,6 @@
 import "@tanstack/react-start/server-only";
-import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { db } from "@repo/db";
-import * as schema from "@repo/db/schema";
+import { zenstackAdapter } from "@zenstackhq/better-auth";
 import { betterAuth } from "better-auth/minimal";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 
@@ -11,9 +10,8 @@ export const auth = betterAuth({
   telemetry: {
     enabled: false,
   },
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema,
+  database: zenstackAdapter(db, {
+    provider: "postgresql",
   }),
 
   // https://www.better-auth.com/docs/integrations/tanstack#usage-tips
@@ -42,10 +40,5 @@ export const auth = betterAuth({
   // https://www.better-auth.com/docs/authentication/email-password
   emailAndPassword: {
     enabled: true,
-  },
-
-  experimental: {
-    // https://www.better-auth.com/docs/adapters/drizzle#joins-experimental
-    joins: true,
   },
 });

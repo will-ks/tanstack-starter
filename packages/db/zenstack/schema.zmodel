@@ -1,0 +1,78 @@
+datasource db {
+    provider = 'postgresql'
+    url = env('DATABASE_URL')
+}
+
+plugin policy {
+    provider = "@zenstackhq/plugin-policy"
+}
+
+// Begin BetterAuth schema
+model User {
+  createdAt          DateTime       @default(now()) @deny('all', true)
+  updatedAt          DateTime       @updatedAt @deny('all', true)
+  id                 String         @id() @default(nanoid())
+  email              String         @unique() @email
+  emailVerified      Boolean        @default(false)
+  name               String
+  image              String?
+
+  sessions Session[]
+  accounts Account[]
+
+  // Non-BetterAuth fields below
+
+  @@allow('read', auth().id == id)
+  @@allow('delete', auth().id == id)
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Non-BetterAuth fields below
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?   @omit
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+
+  // Non-BetterAuth fields below
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+
+  // Non-BetterAuth fields below
+}
+// End BetterAuth schema

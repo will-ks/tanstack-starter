@@ -1,19 +1,34 @@
 import "@tanstack/react-start/server-only";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { ClientContract, ZenStackClient } from "@zenstackhq/orm";
+import { PostgresDialect } from "@zenstackhq/orm/dialects/postgres";
+import { Pool } from "pg";
 
-import * as schemas from "./schema";
-import { relations } from "./schema/relations";
+import { schema, SchemaType } from "../zenstack/schema";
 
-const { relations: authRelations, ...schema } = schemas;
+export type { JsonObject } from "@zenstackhq/orm";
+export * as InputTypes from "../zenstack/input";
+export * as ModelTypes from "../zenstack/models";
+export { schema } from "../zenstack/schema";
 
-const client = postgres(process.env.DATABASE_URL as string);
+export const getZenstackClient = () => {
+  return new ZenStackClient(schema, {
+    dialect: new PostgresDialect({
+      pool: new Pool({
+        connectionString: process.env.DATABASE_URL,
+      }),
+    }),
+  });
+};
 
-export const db = drizzle({
-  client,
-  schema,
-  // authRelations must come first, since it's using defineRelations as the main relation
-  // https://orm.drizzle.team/docs/relations-v2#relations-parts
-  relations: { ...authRelations, ...relations },
-  casing: "snake_case",
-});
+export type DatabaseClient = ClientContract<SchemaType>;
+
+declare global {
+  // eslint-disable-next-line no-var
+  var dbGlobal: DatabaseClient | undefined;
+}
+
+const db: DatabaseClient = globalThis.dbGlobal ?? getZenstackClient();
+
+export { db };
+
+if (process.env.NODE_ENV !== "production") globalThis.dbGlobal = db;

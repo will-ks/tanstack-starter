@@ -5,7 +5,10 @@
 - `pnpm build`: Only for build/bundler issues or verifying production output
 - `pnpm lint`: Type-checking & type-aware linting
 - `pnpm dev` runs indefinitely in watch mode
-- `pnpm db` for Drizzle Kit commands (e.g. `pnpm db generate` to generate a migration)
+- `pnpm db` to generate TypeScript types from the ZenStack schema (`zen generate`)
+- `pnpm db:push` to push schema changes to the database
+- `pnpm db:migrate` to create and apply a migration
+- `pnpm db:reset` to reset the database
 
 Don't build after every change. If lint passes; assume changes work.
 

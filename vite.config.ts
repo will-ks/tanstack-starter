@@ -45,6 +45,7 @@ export default defineConfig({
       "drizzle/",
       "migrations/",
       ".drizzle/",
+      "zenstack/",
       ".cache",
       "worker-configuration.d.ts",
       ".vercel",

@@ -7,7 +7,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "catalog:",
+    "@zenstackhq/better-auth": "catalog:",
     "better-auth": "catalog:"
   },
   "devDependencies": {

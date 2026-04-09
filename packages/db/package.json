@@ -4,22 +4,28 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema/index.ts"
+    ".": "./src/index.ts"
   },
   "scripts": {
-    "db": "drizzle-kit",
-    "auth:generate": "vpx https://pkg.pr.new/better-auth/better-auth/@better-auth/cli@6913 generate --config ../auth/src/auth.ts --y --output ./src/schema/auth.schema.ts"
+    "db:generate": "zen generate",
+    "db:push": "zen db push",
+    "db:migrate": "zen migrate dev",
+    "db:deploy": "zen migrate deploy",
+    "db:reset": "zen migrate reset"
   },
   "dependencies": {
-    "drizzle-orm": "catalog:",
+    "@zenstackhq/better-auth": "catalog:",
+    "@zenstackhq/orm": "catalog:",
+    "@zenstackhq/plugin-policy": "catalog:",
+    "@zenstackhq/schema": "catalog:",
     "nanoid": "catalog:",
-    "postgres": "catalog:"
+    "pg": "catalog:"
   },
   "devDependencies": {
     "@repo/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "drizzle-kit": "catalog:",
+    "@types/pg": "catalog:",
+    "@zenstackhq/cli": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
