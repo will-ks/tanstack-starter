@@ -33,7 +33,7 @@ function SignupForm() {
           },
           onSuccess: () => {
             queryClient.removeQueries({ queryKey: authQueryOptions().queryKey });
-            navigate({ to: redirectUrl });
+            void navigate({ to: redirectUrl });
           },
         },
       );
