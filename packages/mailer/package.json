@@ -1,0 +1,16 @@
+{
+  "name": "@repo/mailer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "emailmd": "catalog:",
+    "nodemailer": "8.0.5"
+  },
+  "devDependencies": {
+    "@repo/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/nodemailer": "8.0.0",
+    "typescript": "catalog:"
+  }
+}
