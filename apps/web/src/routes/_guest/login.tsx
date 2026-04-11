@@ -1,11 +1,13 @@
 import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
 import { authClient } from "@repo/auth/auth-client";
+import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { Label } from "@repo/ui/components/label";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { GalleryVerticalEndIcon, LoaderCircleIcon } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { SignInSocialButton } from "~/components/sign-in-social-button";
@@ -16,108 +18,170 @@ export const Route = createFileRoute("/_guest/login")({
 
 function LoginForm() {
   const { redirectUrl } = Route.useRouteContext();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
 
-  const { mutate: emailLoginMutate, isPending } = useMutation({
-    mutationFn: async (data: { email: string; password: string }) =>
-      await authClient.signIn.email(
+  const { mutate: sendOtpMutate, isPending: isSending } = useMutation({
+    mutationFn: async (userEmail: string) => {
+      await authClient.emailOtp.sendVerificationOtp({
+        email: userEmail,
+        type: "sign-in",
+      });
+    },
+    onSuccess: () => {
+      setOtpSent(true);
+      toast.success("A verification code has been sent to your email.");
+    },
+    onError: ({ message }) => {
+      toast.error(message || "Failed to send verification code.");
+    },
+  });
+
+  const { mutate: verifyMutate, isPending: isVerifying } = useMutation({
+    mutationFn: async () => {
+      await authClient.signIn.emailOtp(
         {
-          ...data,
-          callbackURL: redirectUrl,
+          email,
+          otp,
         },
         {
           onError: ({ error }) => {
-            toast.error(error.message || "An error occurred while signing in.");
+            toast.error(error.message || "Invalid verification code.");
           },
-          // better-auth seems to trigger a hard navigation on login,
-          // so we don't have to revalidate & navigate ourselves
-          // onSuccess: () => {
-          //   queryClient.removeQueries({ queryKey: authQueryOptions().queryKey });
-          //   navigate({ to: redirectUrl });
-          // },
         },
-      ),
+      );
+    },
+    onSuccess: async () => {
+      await queryClient.refetchQueries(authQueryOptions());
+      await navigate({ to: redirectUrl });
+    },
   });
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSendOtp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isPending) return;
-
+    if (isSending) return;
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const userEmail = formData.get("email") as string;
+    if (!userEmail) return;
+    setEmail(userEmail);
+    sendOtpMutate(userEmail);
+  };
 
-    if (!email || !password) return;
-
-    emailLoginMutate({ email, password });
+  const handleVerify = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isVerifying || !otp) return;
+    verifyMutate();
   };
 
   return (
     <div className="flex flex-col gap-6">
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col items-center gap-2">
-            <Link to="/" className="flex flex-col items-center gap-2 font-medium">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md">
-                <GalleryVerticalEndIcon className="size-6" />
+      {!otpSent ? (
+        <form onSubmit={handleSendOtp}>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col items-center gap-2">
+              <Link to="/" className="flex flex-col items-center gap-2 font-medium">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md">
+                  <GalleryVerticalEndIcon className="size-6" />
+                </div>
+                <span className="sr-only">Acme Inc.</span>
+              </Link>
+              <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+              <p className="text-sm text-muted-foreground">
+                Enter your email to receive a login code.
+              </p>
+            </div>
+            <div className="flex flex-col gap-5">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="hello@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  readOnly={isSending}
+                  required
+                />
               </div>
-              <span className="sr-only">Acme Inc.</span>
-            </Link>
-            <h1 className="text-xl font-bold">Welcome back to Acme Inc.</h1>
-          </div>
-          <div className="flex flex-col gap-5">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="hello@example.com"
-                readOnly={isPending}
-                required
+              <Button type="submit" className="mt-2 w-full" size="lg" disabled={isSending}>
+                {isSending && <LoaderCircleIcon className="animate-spin" />}
+                {isSending ? "Sending code..." : "Continue with email"}
+              </Button>
+            </div>
+            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+              <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <SignInSocialButton
+                provider="github"
+                callbackURL={redirectUrl}
+                disabled={isSending}
+                icon={<SiGithub className="size-4" />}
+              />
+              <SignInSocialButton
+                provider="google"
+                callbackURL={redirectUrl}
+                disabled={isSending}
+                icon={<SiGoogle className="size-4" />}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Enter password here"
-                readOnly={isPending}
-                required
-              />
+          </div>
+        </form>
+      ) : (
+        <form onSubmit={handleVerify}>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col items-center gap-2">
+              <Link to="/" className="flex flex-col items-center gap-2 font-medium">
+                <div className="flex h-8 w-8 items-center justify-center rounded-md">
+                  <GalleryVerticalEndIcon className="size-6" />
+                </div>
+                <span className="sr-only">Acme Inc.</span>
+              </Link>
+              <h1 className="text-xl font-bold">Check your email</h1>
+              <p className="text-sm text-muted-foreground">
+                We sent a verification code to <span className="font-medium">{email}</span>
+              </p>
             </div>
-            <Button type="submit" className="mt-2 w-full" size="lg" disabled={isPending}>
-              {isPending && <LoaderCircleIcon className="animate-spin" />}
-              {isPending ? "Logging in..." : "Login"}
-            </Button>
+            <div className="flex flex-col gap-5">
+              <div className="grid gap-2">
+                <Label htmlFor="otp">Verification code</Label>
+                <Input
+                  id="otp"
+                  name="otp"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="Enter 6-digit code"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  readOnly={isVerifying}
+                  required
+                />
+              </div>
+              <Button type="submit" className="mt-2 w-full" size="lg" disabled={isVerifying}>
+                {isVerifying && <LoaderCircleIcon className="animate-spin" />}
+                {isVerifying ? "Verifying..." : "Verify and sign in"}
+              </Button>
+            </div>
+            <button
+              type="button"
+              className="text-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              disabled={isSending}
+              onClick={() => {
+                setOtpSent(false);
+                setOtp("");
+                setEmail("");
+              }}
+            >
+              Use a different email
+            </button>
           </div>
-          <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-            <span className="relative z-10 bg-background px-2 text-muted-foreground">Or</span>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <SignInSocialButton
-              provider="github"
-              callbackURL={redirectUrl}
-              disabled={isPending}
-              icon={<SiGithub className="size-4" />}
-            />
-            <SignInSocialButton
-              provider="google"
-              callbackURL={redirectUrl}
-              disabled={isPending}
-              icon={<SiGoogle className="size-4" />}
-            />
-          </div>
-        </div>
-      </form>
-
-      <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link to="/signup" className="underline underline-offset-4">
-          Sign up
-        </Link>
-      </div>
+        </form>
+      )}
     </div>
   );
 }

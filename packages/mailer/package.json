@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
   "dependencies": {
     "emailmd": "catalog:",
     "nodemailer": "8.0.5"

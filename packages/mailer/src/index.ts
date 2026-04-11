@@ -12,8 +12,42 @@ const APP_INFO = {
 
 class Mailer {
   transporter: Transporter;
-  constructor({ smtpSettings }: { smtpSettings: SMTPTransport.Options }) {
+  logToConsole: boolean;
+
+  constructor({
+    smtpSettings,
+    logToConsole = false,
+  }: {
+    smtpSettings: SMTPTransport.Options;
+    logToConsole?: boolean;
+  }) {
     this.transporter = createTransport(smtpSettings);
+    this.logToConsole = logToConsole;
+  }
+
+  sendMail({
+    subject,
+    to,
+    from,
+    html,
+    text,
+  }: {
+    subject: string;
+    to: string;
+    from?: string;
+    text: string;
+    html: string;
+  }) {
+    if (this.logToConsole) {
+      console.log(text);
+    }
+    return this.transporter.sendMail({
+      subject,
+      to,
+      from: from ?? APP_INFO.from,
+      text,
+      html,
+    });
   }
 
   sendOtpLink({ to, otp }: { to: string; otp: string }) {
@@ -41,10 +75,9 @@ This code will expire in 10 minutes and can only be used once. Never share this 
 To learn more about ${APP_INFO.name}, please visit [${APP_INFO.link}](${APP_INFO.link}).
 :::
 `);
-    return this.transporter.sendMail({
+    return this.sendMail({
       subject: `${APP_INFO.name} - Log in code`,
       to,
-      from: APP_INFO.from,
       text,
       html,
     });
@@ -52,6 +85,6 @@ To learn more about ${APP_INFO.name}, please visit [${APP_INFO.link}](${APP_INFO
 }
 
 export const mailer = new Mailer({
-  // @ts-ignore
-  streamTransport: true,
+  smtpSettings: {},
+  logToConsole: true,
 });

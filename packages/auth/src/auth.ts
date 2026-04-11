@@ -1,8 +1,9 @@
 import "@tanstack/react-start/server-only";
 import { db } from "@repo/db";
+import { mailer } from "@repo/mailer/index";
 import { zenstackAdapter } from "@zenstackhq/better-auth";
 import { betterAuth } from "better-auth/minimal";
-import { organization } from "better-auth/plugins";
+import { emailOTP, organization } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 
 export const auth = betterAuth({
@@ -15,7 +16,15 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
 
-  plugins: [tanstackStartCookies(), organization()],
+  plugins: [
+    tanstackStartCookies(),
+    organization(),
+    emailOTP({
+      async sendVerificationOTP({ email, otp }) {
+        await mailer.sendOtpLink({ to: email, otp });
+      },
+    }),
+  ],
 
   // https://www.better-auth.com/docs/concepts/session-management#session-caching
   session: {
@@ -35,11 +44,6 @@ export const auth = betterAuth({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     },
-  },
-
-  // https://www.better-auth.com/docs/authentication/email-password
-  emailAndPassword: {
-    enabled: true,
   },
 
   // Auto-create a personal organization for each new user and set it as
