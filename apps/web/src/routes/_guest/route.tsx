@@ -8,11 +8,11 @@ export const Route = createFileRoute("/_guest")({
     // or after successful login/signup
     const REDIRECT_URL = "/app";
 
-    const user = await context.queryClient.ensureQueryData({
+    const authResult = await context.queryClient.ensureQueryData({
       ...authQueryOptions(),
       revalidateIfStale: true,
     });
-    if (user) {
+    if (authResult?.user) {
       throw redirect({
         to: REDIRECT_URL,
       });

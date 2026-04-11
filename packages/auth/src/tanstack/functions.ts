@@ -3,16 +3,14 @@ import { getRequest, setResponseHeader } from "@tanstack/react-start/server";
 
 import { auth } from "../auth";
 
-/**
- * This server function is meant to be called via authQueryOptions() in queries.ts,
- * which is used in the _auth layout route to protect all child routes under it (e.g. _auth/app/*)
- *
- * For securing server functions or API routes,
- * consider using authMiddleware from middleware.ts instead.
- */
+export interface AuthContext {
+  user: NonNullable<Awaited<ReturnType<typeof _getUser>>["user"]>;
+  organizationId: string | null;
+  organizationRole: string | null;
+}
+
 export const $getUser = createServerFn({ method: "GET" }).handler(async () => {
-  const user = await _getUser();
-  return user;
+  return _getUser();
 });
 
 interface GetUserServerQuery {
@@ -20,11 +18,6 @@ interface GetUserServerQuery {
   disableRefresh?: boolean | undefined;
 }
 
-/**
- * Server-only util, meant to be used by the $getUser server function and auth middleware so logic can be shared with optional query params.
- *
- * For server app logic, consider using authMiddleware instead.
- */
 export const _getUser = createServerOnlyFn(async (query?: GetUserServerQuery) => {
   const session = await auth.api.getSession({
     headers: getRequest().headers,
@@ -32,11 +25,23 @@ export const _getUser = createServerOnlyFn(async (query?: GetUserServerQuery) =>
     returnHeaders: true,
   });
 
-  // Forward any Set-Cookie headers to the client, e.g. for session/cache refresh
   const cookies = session.headers?.getSetCookie();
   if (cookies?.length) {
     setResponseHeader("Set-Cookie", cookies);
   }
 
-  return session.response?.user || null;
+  const user = session.response?.user || null;
+  const organizationId = session.response?.session?.activeOrganizationId ?? null;
+
+  let organizationRole: string | null = null;
+  if (user && organizationId) {
+    const org = await auth.api.getFullOrganization({
+      headers: getRequest().headers,
+      query: { organizationId },
+    });
+    const myMember = org?.members?.find((m) => m.userId === user.id);
+    organizationRole = myMember?.role ?? null;
+  }
+
+  return { user, organizationId, organizationRole };
 });

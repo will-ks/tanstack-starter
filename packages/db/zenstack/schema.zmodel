@@ -7,6 +7,13 @@ plugin policy {
     provider = "@zenstackhq/plugin-policy"
 }
 
+type Auth {
+    userId           String  @id
+    organizationId   String?
+    organizationRole String?
+    @@auth
+}
+
 // Begin BetterAuth schema
 model User {
   createdAt          DateTime       @default(now()) @deny('all', true)
@@ -19,11 +26,12 @@ model User {
 
   sessions Session[]
   accounts Account[]
+  members   Member[]
 
   // Non-BetterAuth fields below
 
-  @@allow('read', auth().id == id)
-  @@allow('delete', auth().id == id)
+  @@allow('read', auth().userId == id)
+  @@allow('delete', auth().userId == id)
 }
 
 model Session {
@@ -39,6 +47,7 @@ model Session {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Non-BetterAuth fields below
+  activeOrganizationId String?
 }
 
 model Account {
@@ -76,3 +85,56 @@ model Verification {
   // Non-BetterAuth fields below
 }
 // End BetterAuth schema
+
+// Begin BetterAuth Organization schema
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  logo      String?
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  members     Member[]
+  invitations Invitation[]
+
+  @@allow('read', auth().organizationId == id)
+  @@allow('create', true)
+  @@allow('update', auth().organizationRole == 'owner' || auth().organizationRole == 'admin')
+  @@allow('delete', auth().organizationRole == 'owner')
+}
+
+model Member {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String
+  role           String
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@allow('read', auth().organizationId == organizationId)
+  @@allow('create', auth().organizationRole == 'owner' || auth().organizationRole == 'admin')
+  @@allow('update', auth().organizationRole == 'owner' || auth().organizationRole == 'admin')
+  @@allow('delete', auth().organizationRole == 'owner')
+}
+
+model Invitation {
+  id             String   @id @default(cuid())
+  organizationId String
+  email          String
+  role           String
+  status         String   @default("pending")
+  expiresAt      DateTime
+  inviterId      String
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@allow('read', auth().organizationId == organizationId)
+  @@allow('create', auth().organizationRole == 'owner' || auth().organizationRole == 'admin')
+  @@allow('update', auth().organizationId == organizationId)
+  @@allow('delete', auth().organizationRole == 'owner' || auth().organizationRole == 'admin')
+}
+// End BetterAuth Organization schema

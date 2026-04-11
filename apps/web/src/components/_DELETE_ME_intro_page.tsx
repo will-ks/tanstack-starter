@@ -93,7 +93,7 @@ export function IntroPageDeleteMe() {
 }
 
 function UserAction() {
-  const { user } = useAuthSuspense();
+  const { user, organizationId, organizationRole } = useAuthSuspense();
 
   return user ? (
     <section className="mb-20 flex flex-col items-center space-y-1.5">
@@ -118,6 +118,10 @@ function UserAction() {
         <div className="overflow-x-auto p-6">
           <pre className="font-mono text-xs leading-relaxed text-foreground/80">
             {JSON.stringify(user, null, 2)}
+            {JSON.stringify({
+              organizationRole,
+              organizationId,
+            })}
           </pre>
         </div>
       </div>

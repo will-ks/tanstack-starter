@@ -17,6 +17,7 @@ export const getZenstackClient = () => {
         connectionString: process.env.DATABASE_URL,
       }),
     }),
+    log: ["error"],
   });
 };
 
