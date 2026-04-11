@@ -3,6 +3,7 @@ import { authClient } from "@repo/auth/auth-client";
 import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/components/input-otp";
 import { Label } from "@repo/ui/components/label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
@@ -148,19 +149,28 @@ function LoginForm() {
             </div>
             <div className="flex flex-col gap-5">
               <div className="grid gap-2">
-                <Label htmlFor="otp">Verification code</Label>
-                <Input
-                  id="otp"
-                  name="otp"
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  placeholder="Enter 6-digit code"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  readOnly={isVerifying}
-                  required
-                />
+                <Label htmlFor="otp" className="mx-auto">
+                  Verification code
+                </Label>
+                <div className="flex justify-center">
+                  <InputOTP
+                    id="otp"
+                    maxLength={6}
+                    autoComplete="one-time-code"
+                    value={otp}
+                    onChange={(value) => setOtp(value)}
+                    disabled={isVerifying}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
               </div>
               <Button type="submit" className="mt-2 w-full" size="lg" disabled={isVerifying}>
                 {isVerifying && <LoaderCircleIcon className="animate-spin" />}

@@ -41,6 +41,7 @@ catalog:
   date-fns: ^4.1.0
   emailmd: ^0.2.1
   eslint-plugin-react-hooks: ^7.0.1
+  input-otp: ^1.4.2
   lucide-react: ^1.7.0
   motion: ^12.38.0
   nanoid: ^5.1.7
