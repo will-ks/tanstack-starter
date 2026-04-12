@@ -4,7 +4,7 @@
 
 ## Essentials
 
-- Stack: TypeScript + React (TanStack Start) in a pnpm + Vite+ monorepo, with ZenStack v3, shadcn/ui, and Better Auth.
+- Stack: TypeScript + React (TanStack Start) in a pnpm + Vite+ monorepo, with ZenStack v3, shadcn/ui, Better Auth, and pg-boss.
 - Prefer shared `@repo/ui` components; add primitives via shadcn CLI (`pnpm ui add <component>`).
 - Use `lucide-react` for UI icons (use `Icon` suffix, e.g. `import { Loader2Icon } from "lucide-react"`); for brand icons use `@icons-pack/react-simple-icons` (e.g. `SiGithub`).
 - Use shared pnpm catalog versions (`pnpm-workspace.yaml`) via `catalog:`.
@@ -24,6 +24,8 @@
 ├── packages/
 │   ├── auth/                  # @repo/auth - Better Auth + TanStack integration
 │   ├── db/                    # @repo/db - ZenStack ORM + PostgreSQL
+│   ├── jobs/                  # @repo/jobs - pg-boss background task queue
+│   ├── mailer/                # @repo/mailer - Email sending (nodemailer)
 │   └── ui/                    # @repo/ui - shadcn/ui components & utilities
 ├── tooling/tsconfig/          # @repo/tsconfig - shared TS base config
 └── .agents/                   # Detailed topic guides
@@ -39,6 +41,9 @@
 | Edit auth config           | `packages/auth/src/auth.ts`                     | Better Auth server config (social providers, session)                |
 | Edit auth middleware       | `packages/auth/src/tanstack/middleware.ts`      | `authMiddleware`, `freshAuthMiddleware`                              |
 | Edit DB schema             | `packages/db/zenstack/schema.zmodel`            | Then run `pnpm db` to regenerate                                     |
+| Add background job         | `packages/jobs/src/workers/`                    | Create queue, add handler, register in `workers/index.ts`            |
+| Queue a job                | `send()` from `@repo/jobs`                      | Call from server functions                                           |
+| Monitor jobs               | `pnpm jobs:dashboard`                           | Requires `DATABASE_URL` in environment                               |
 | Add server function        | Co-locate with route or in `packages/`          | Prefix with `$`, wrap in `createServerFn`                            |
 | Add TanStack query         | Near the consuming code or in auth `queries.ts` | Use `queryOptions()` pattern                                         |
 | Lint/format config         | `vite.config.ts` (root)                         | Oxfmt + Oxlint via Vite+                                             |
@@ -54,6 +59,7 @@ pnpm check        # Format + lint + type-check
 pnpm build        # Production build (all)
 pnpm db           # Generate ZenStack types (run after schema changes)
 pnpm db:push      # Push schema to database
+pnpm jobs:dashboard  # pg-boss monitoring dashboard (needs DATABASE_URL)
 pnpm ui           # shadcn/ui CLI (adds to packages/ui)
 pnpm ui:web       # shadcn/ui CLI (adds to apps/web)
 ```

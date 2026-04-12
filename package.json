@@ -25,6 +25,7 @@
     "ui": "vp run --filter=@repo/ui ui",
     "ui:web": "vp run --filter=@repo/web ui",
     "auth:secret": "vpx auth@latest secret",
+    "jobs:dashboard": "vpx @pg-boss/dashboard@latest",
     "skills": "vpx skills@latest",
     "intent": "vpx @tanstack/intent@latest"
   },
