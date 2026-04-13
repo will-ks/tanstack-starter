@@ -11,7 +11,7 @@ const APP_INFO = {
 };
 
 class Mailer {
-  transporter: Transporter;
+  transporter: Transporter | null;
   logToConsole: boolean;
 
   constructor({
@@ -21,7 +21,8 @@ class Mailer {
     smtpSettings: SMTPTransport.Options;
     logToConsole?: boolean;
   }) {
-    this.transporter = createTransport(smtpSettings);
+    const hasSmtpConfig = smtpSettings.host || smtpSettings.port;
+    this.transporter = hasSmtpConfig ? createTransport(smtpSettings) : null;
     this.logToConsole = logToConsole;
   }
 
@@ -41,6 +42,7 @@ class Mailer {
     if (this.logToConsole) {
       console.log(text);
     }
+    if (!this.transporter) return;
     return this.transporter.sendMail({
       subject,
       to,
