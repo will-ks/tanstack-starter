@@ -1,6 +1,9 @@
+import { createLogger } from "@repo/logger";
 import { render } from "emailmd";
 import { createTransport, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+
+const logger = createLogger({ name: "mailer" });
 
 const APP_INFO = {
   name: "MY_APP",
@@ -39,7 +42,7 @@ class Mailer {
     html: string;
   }) {
     if (this.logToConsole) {
-      console.log(text);
+      logger.info({ to, subject, text }, "email output (console mode)");
     }
     return this.transporter.sendMail({
       subject,
@@ -51,6 +54,7 @@ class Mailer {
   }
 
   sendOtpLink({ to, otp }: { to: string; otp: string }) {
+    logger.info({ to }, "sending otp email");
     const { html, text } = render(`
 ---
 preheader: "Use this code to log in to ${APP_INFO.name}"

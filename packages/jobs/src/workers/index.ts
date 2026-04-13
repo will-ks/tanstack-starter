@@ -1,5 +1,9 @@
+import { createLogger } from "@repo/logger";
+
 import { getBoss, work } from "../boss";
 import { greetingWorker } from "./greeting";
+
+const logger = createLogger({ name: "jobs:workers" });
 
 const QUEUES = ["greeting"] as const;
 
@@ -12,5 +16,5 @@ export async function registerWorkers(): Promise<void> {
 
   await work("greeting", greetingWorker);
 
-  console.log("[jobs] workers registered");
+  logger.info({ queues: QUEUES }, "workers registered");
 }

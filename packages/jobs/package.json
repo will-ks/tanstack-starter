@@ -12,6 +12,7 @@
     "test:watch": "vp test"
   },
   "dependencies": {
+    "@repo/logger": "workspace:*",
     "pg-boss": "catalog:"
   },
   "devDependencies": {

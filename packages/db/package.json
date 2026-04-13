@@ -15,6 +15,7 @@
     "db:studio": "zen studio"
   },
   "dependencies": {
+    "@repo/logger": "workspace:*",
     "@zenstackhq/better-auth": "catalog:",
     "@zenstackhq/orm": "catalog:",
     "@zenstackhq/plugin-policy": "catalog:",
