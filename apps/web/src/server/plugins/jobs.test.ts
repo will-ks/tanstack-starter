@@ -28,7 +28,7 @@ describe("Nitro jobs plugin", () => {
   it("should initialize pg-boss and register workers on startup", async () => {
     const { default: plugin } = await import("./jobs");
 
-    void plugin(mockNitro as never);
+    plugin(mockNitro as never);
 
     await vi.waitFor(() => {
       expect(mockGetBoss).toHaveBeenCalledOnce();
@@ -40,7 +40,7 @@ describe("Nitro jobs plugin", () => {
   it("should register a close hook for graceful shutdown", async () => {
     const { default: plugin } = await import("./jobs");
 
-    void plugin(mockNitro as never);
+    plugin(mockNitro as never);
 
     await vi.waitFor(() => {
       expect(mockHooks.hook).toHaveBeenCalledWith("close", expect.any(Function));
@@ -50,7 +50,7 @@ describe("Nitro jobs plugin", () => {
   it("should call stopBoss when the close hook fires", async () => {
     const { default: plugin } = await import("./jobs");
 
-    void plugin(mockNitro as never);
+    plugin(mockNitro as never);
 
     await vi.waitFor(() => {
       expect(mockHooks.hook).toHaveBeenCalled();
@@ -69,7 +69,7 @@ describe("Nitro jobs plugin", () => {
   it("should not call stopBoss until close hook fires", async () => {
     const { default: plugin } = await import("./jobs");
 
-    void plugin(mockNitro as never);
+    plugin(mockNitro as never);
 
     await vi.waitFor(() => {
       expect(mockGetBoss).toHaveBeenCalled();

@@ -57,6 +57,7 @@ describe("boss", () => {
       const { getBoss } = await import("./boss");
       const boss = await getBoss();
 
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(boss.start).toHaveBeenCalled();
     });
 
@@ -114,6 +115,7 @@ describe("boss", () => {
       const { getBoss } = await import("./boss");
       const boss = await getBoss();
 
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(boss.send).toHaveBeenCalledWith("test-queue", { foo: "bar" }, undefined);
       expect(jobId).toBe("job-id-123");
     });
@@ -128,6 +130,7 @@ describe("boss", () => {
       const { getBoss } = await import("./boss");
       const boss = await getBoss();
 
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(boss.work).toHaveBeenCalledWith("test-queue", handler);
       expect(workerId).toBe("worker-id-456");
     });
@@ -141,6 +144,7 @@ describe("boss", () => {
       const { getBoss } = await import("./boss");
       const boss = await getBoss();
 
+      // eslint-disable-next-line typescript-eslint/unbound-method
       expect(boss.work).toHaveBeenCalledWith("test-queue", options, handler);
     });
   });
