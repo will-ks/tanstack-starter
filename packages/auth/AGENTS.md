@@ -33,6 +33,7 @@ Import as `@repo/auth/auth`, `@repo/auth/tanstack/queries`, etc.
 
 - `authMiddleware`: Uses cookie cache (5 min). Good for read operations in route loaders.
 - `freshAuthMiddleware`: Always hits DB. Use for mutations and destructive operations.
+- Both provide context: `{ user, organizationId, organizationRole }`.
 - **Both** are required on protected server functions, even if called from `_auth` routes. Route-level `beforeLoad` guards navigation only, not server-function authorization.
 
 ## Conventions

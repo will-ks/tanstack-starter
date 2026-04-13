@@ -21,9 +21,10 @@ ZenStack v3 ORM + PostgreSQL. Schema-driven type generation with access control 
 
 ## Schema Conventions
 
-- Models use `@default(nanoid())` for IDs, `@default(now())` for timestamps
-- Access control via `@@allow` policies with `auth().id` checks
+- Models use `@default(nanoid())` or `@default(cuid())` for IDs, `@default(now())` for timestamps
+- Access control via `@@allow` policies with `auth().userId` and `auth().organizationId` checks
 - BetterAuth models (User, Session, Account, Verification) are predefined — add custom fields under `// Non-BetterAuth fields below` comments
+- BetterAuth Organization models (Organization, Member, Invitation) are predefined — follow same pattern
 - Non-BetterAuth fields should be added to existing models, not by modifying BetterAuth field definitions
 
 ## Exports

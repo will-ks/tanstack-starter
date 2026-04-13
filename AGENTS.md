@@ -1,6 +1,6 @@
 # Agent Guidelines
 
-**Commit:** 2521b24 | **Branch:** main | **Node:** >=24 | **PM:** pnpm@10.33.0
+**Commit:** b0cae95 | **Branch:** main | **Node:** >=24 | **PM:** pnpm@10.33.0
 
 ## Essentials
 
