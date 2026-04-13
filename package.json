@@ -25,11 +25,12 @@
     "ui": "vp run --filter=@repo/ui ui",
     "ui:web": "vp run --filter=@repo/web ui",
     "auth:secret": "vpx auth@latest secret",
-    "jobs:dashboard": "vpx @pg-boss/dashboard@latest",
+    "jobs:dashboard": "dotenvx run -f apps/web/.env -- vpx @pg-boss/dashboard@latest",
     "skills": "vpx skills@latest",
     "intent": "vpx @tanstack/intent@latest"
   },
   "devDependencies": {
+    "@dotenvx/dotenvx": "catalog:",
     "@tanstack/eslint-plugin-query": "catalog:",
     "@tanstack/eslint-plugin-router": "catalog:",
     "eslint-plugin-react-hooks": "catalog:",
