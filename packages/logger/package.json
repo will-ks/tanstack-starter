@@ -1,20 +1,22 @@
 {
-  "name": "@repo/mailer",
-  "version": "1.0.0",
+  "name": "@repo/logger",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*.ts"
+    ".": "./src/index.ts"
   },
+  "scripts": {},
   "dependencies": {
-    "@repo/logger": "workspace:*",
-    "emailmd": "catalog:",
-    "nodemailer": "8.0.5"
+    "pino": "^8.20.0",
+    "pino-pretty": "^11.0.0"
   },
   "devDependencies": {
     "@repo/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "@types/nodemailer": "8.0.0",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@tanstack/react-start": "catalog:"
   }
 }

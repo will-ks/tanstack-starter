@@ -1,14 +1,22 @@
 import "@tanstack/react-start/server-only";
 import { db } from "@repo/db";
+import { createLogger } from "@repo/logger";
 import { mailer } from "@repo/mailer/index";
 import { zenstackAdapter } from "@zenstackhq/better-auth";
 import { betterAuth } from "better-auth/minimal";
 import { emailOTP, organization } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 
+const logger = createLogger({ name: "auth" });
+
 export const auth = betterAuth({
   baseURL: process.env.VITE_BASE_URL,
   secret: process.env.BETTER_AUTH_SECRET,
+  logger: {
+    log: (level, message, ...args) => {
+      logger[level]({ args }, message);
+    },
+  },
   telemetry: {
     enabled: false,
   },
@@ -21,6 +29,7 @@ export const auth = betterAuth({
     organization(),
     emailOTP({
       async sendVerificationOTP({ email, otp }) {
+        logger.info({ email }, "sending verification otp");
         await mailer.sendOtpLink({ to: email, otp });
       },
     }),
@@ -64,6 +73,10 @@ export const auth = betterAuth({
           const firstOrg = memberships[0];
 
           if (firstOrg) {
+            logger.debug(
+              { userId: session.userId, organizationId: firstOrg.organizationId },
+              "session attaching existing org",
+            );
             return {
               data: {
                 ...session,
@@ -80,6 +93,11 @@ export const auth = betterAuth({
               userId: session.userId,
             },
           });
+
+          logger.info(
+            { userId: session.userId, organizationId: org.id },
+            "created personal organization for new user",
+          );
 
           return {
             data: {
