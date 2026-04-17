@@ -97,6 +97,11 @@ model Organization {
 
   members     Member[]
   invitations Invitation[]
+  plan        Plan?       @relation(fields: [planId], references: [id])
+
+  // Non-BetterAuth fields below
+  planId           String?  // Current plan (null = free tier)
+  polarCustomerId  String?  // Polar customer ID (created on first subscription)
 
   @@allow('read', auth().organizationId == id)
   @@allow('create', true)
@@ -138,3 +143,27 @@ model Invitation {
   @@allow('delete', auth().organizationRole == 'owner' || auth().organizationRole == 'admin')
 }
 // End BetterAuth Organization schema
+
+// Plan definitions — source of truth for entitlements.
+// Polar products map 1:1 to Plan via polarProductId.
+// Add typed entitlement columns here (e.g. maxProjects Int @default(3)).
+model Plan {
+  id             String   @id @default(nanoid())
+  slug           String   @unique        // e.g. "free", "pro", "team"
+  name           String                  // Display name
+  description    String?                 // Short description
+  polarProductId String?  @unique        // Maps to Polar product ID (null for free tier)
+  // Entitlements — add typed columns here, e.g.:
+  // maxProjects    Int     @default(3)
+  // customDomains  Boolean @default(false)
+  sortOrder      Int      @default(0)    // Display order
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organizations Organization[]
+
+  @@allow('read', true)
+  @@allow('create', false)
+  @@allow('update', false)
+  @@allow('delete', false)
+}

@@ -1,3 +1,4 @@
+import { polarClient } from "@polar-sh/better-auth/client";
 import { emailOTPClient, organizationClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 
@@ -11,5 +12,5 @@ import { createAuthClient } from "better-auth/react";
  */
 export const authClient = createAuthClient({
   baseURL: (import.meta as any).env.VITE_BASE_URL || process.env.VITE_BASE_URL,
-  plugins: [organizationClient(), emailOTPClient()],
+  plugins: [organizationClient(), emailOTPClient(), polarClient()],
 });

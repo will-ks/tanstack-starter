@@ -1,4 +1,6 @@
 import "@tanstack/react-start/server-only";
+import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
+import { Polar } from "@polar-sh/sdk";
 import { db } from "@repo/db";
 import { createLogger } from "@repo/logger";
 import { mailer } from "@repo/mailer/index";
@@ -8,6 +10,11 @@ import { emailOTP, organization } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 
 const logger = createLogger({ name: "auth" });
+
+export const polarClient = new Polar({
+  accessToken: process.env.POLAR_ACCESS_TOKEN,
+  server: process.env.POLAR_SERVER === "production" ? "production" : "sandbox",
+});
 
 export const auth = betterAuth({
   baseURL: process.env.VITE_BASE_URL,
@@ -32,6 +39,34 @@ export const auth = betterAuth({
         logger.info({ email }, "sending verification otp");
         await mailer.sendOtpLink({ to: email, otp });
       },
+    }),
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: false,
+      use: [
+        checkout({
+          successUrl: process.env.VITE_BASE_URL + "/app/billing?checkout=success",
+          authenticatedUsersOnly: true,
+        }),
+        portal({
+          returnUrl: process.env.VITE_BASE_URL + "/app/billing",
+        }),
+        webhooks({
+          secret: process.env.POLAR_WEBHOOK_SECRET!,
+          onSubscriptionCreated: async (payload) => {
+            logger.info({ payload }, "polar subscription created");
+          },
+          onSubscriptionActive: async (payload) => {
+            logger.info({ payload }, "polar subscription active");
+          },
+          onSubscriptionCanceled: async (payload) => {
+            logger.info({ payload }, "polar subscription canceled");
+          },
+          onSubscriptionRevoked: async (payload) => {
+            logger.info({ payload }, "polar subscription revoked");
+          },
+        }),
+      ],
     }),
   ],
 

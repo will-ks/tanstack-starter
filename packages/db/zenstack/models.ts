@@ -14,4 +14,5 @@ export type Verification = $ModelResult<$Schema, "Verification">;
 export type Organization = $ModelResult<$Schema, "Organization">;
 export type Member = $ModelResult<$Schema, "Member">;
 export type Invitation = $ModelResult<$Schema, "Invitation">;
+export type Plan = $ModelResult<$Schema, "Plan">;
 export type Auth = $TypeDefResult<$Schema, "Auth">;

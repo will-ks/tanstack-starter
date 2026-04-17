@@ -9,6 +9,8 @@ catalog:
   "@dotenvx/dotenvx": ^1.61.0
   "@fontsource-variable/dm-sans": ^5.2.8
   "@icons-pack/react-simple-icons": ^13.13.0
+  "@polar-sh/better-auth": ^1.8.3
+  "@polar-sh/sdk": ^0.47.0
   "@rolldown/plugin-babel": ^0.2.2
   "@tailwindcss/vite": ^4.2.2
   "@tanstack/devtools-a11y": ^0.1.2
