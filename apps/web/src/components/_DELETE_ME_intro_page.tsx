@@ -93,7 +93,8 @@ export function IntroPageDeleteMe() {
 }
 
 function UserAction() {
-  const { user, organizationId, organizationRole } = useAuthSuspense();
+  const { user, organizationId, organizationRole, plan } = useAuthSuspense();
+  console.log(user, organizationId, organizationRole, plan);
 
   return user ? (
     <section className="mb-20 flex flex-col items-center space-y-1.5">

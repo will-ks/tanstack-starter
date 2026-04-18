@@ -8,6 +8,7 @@ export function useAuth() {
     user: data?.user ?? null,
     organizationId: data?.organizationId ?? null,
     organizationRole: data?.organizationRole ?? null,
+    plan: data?.plan ?? null,
     isPending,
   };
 }
@@ -18,5 +19,6 @@ export function useAuthSuspense() {
     user: data.user,
     organizationId: data.organizationId,
     organizationRole: data.organizationRole,
+    plan: data.plan,
   };
 }

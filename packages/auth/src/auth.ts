@@ -120,12 +120,16 @@ export const auth = betterAuth({
             };
           }
 
-          // First sign-up — no org yet, create one
-          const org = await auth.api.createOrganization({
-            body: {
-              name: `Personal`,
+          const plan = await db.plan.findUniqueOrThrow({ where: { slug: "free" } });
+
+          const org = await db.organization.create({
+            data: {
+              name: "Personal",
               slug: `personal-${session.userId}`,
-              userId: session.userId,
+              planId: plan.id,
+              members: {
+                create: { userId: session.userId, role: "owner" },
+              },
             },
           });
 

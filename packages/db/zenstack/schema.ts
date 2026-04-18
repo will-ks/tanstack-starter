@@ -335,14 +335,12 @@ export class SchemaType implements SchemaDef {
                 plan: {
                     name: "plan",
                     type: "Plan",
-                    optional: true,
                     attributes: [{ name: "@relation", args: [{ name: "fields", value: ExpressionUtils.array("String", [ExpressionUtils.field("planId")]) }, { name: "references", value: ExpressionUtils.array("String", [ExpressionUtils.field("id")]) }] }] as readonly AttributeApplication[],
                     relation: { opposite: "organizations", fields: ["planId"], references: ["id"] }
                 },
                 planId: {
                     name: "planId",
                     type: "String",
-                    optional: true,
                     foreignKeyFor: [
                         "plan"
                     ] as readonly string[]

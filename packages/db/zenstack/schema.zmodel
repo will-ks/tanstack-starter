@@ -97,10 +97,10 @@ model Organization {
 
   members     Member[]
   invitations Invitation[]
-  plan        Plan?       @relation(fields: [planId], references: [id])
+  plan        Plan       @relation(fields: [planId], references: [id])
 
   // Non-BetterAuth fields below
-  planId           String?  // Current plan (null = free tier)
+  planId           String
   polarCustomerId  String?  // Polar customer ID (created on first subscription)
 
   @@allow('read', auth().organizationId == id)

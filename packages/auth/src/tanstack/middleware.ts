@@ -24,6 +24,7 @@ export const authMiddleware = createMiddleware().server(async ({ next }) => {
       user: authContext.user,
       organizationId: authContext.organizationId,
       organizationRole: authContext.organizationRole,
+      plan: authContext.plan,
     },
   });
 });
@@ -44,6 +45,7 @@ export const freshAuthMiddleware = createMiddleware().server(async ({ next }) =>
       user: authContext.user,
       organizationId: authContext.organizationId,
       organizationRole: authContext.organizationRole,
+      plan: authContext.plan,
     },
   });
 });

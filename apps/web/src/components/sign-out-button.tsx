@@ -18,6 +18,7 @@ export function SignOutButton() {
                 user: null,
                 organizationId: null,
                 organizationRole: null,
+                plan: null,
               });
               await router.invalidate();
             },
