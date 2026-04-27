@@ -1,4 +1,4 @@
-import { db } from "@repo/db";
+import { db } from "@repo/db/internal";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { getRequest, setResponseHeader } from "@tanstack/react-start/server";
 

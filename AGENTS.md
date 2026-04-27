@@ -80,6 +80,7 @@ pnpm ui:web       # shadcn/ui CLI (adds to apps/web)
 - **NEVER** dynamically import server functions — use static imports
 - **NEVER** use pnpm/npm/yarn directly — use `vp` commands (see `.agents/vite-plus.md`)
 - **NEVER** edit generated files in `packages/db/zenstack/` (except `schema.zmodel`)
+- **NEVER** import raw `db` from `@repo/db/internal` in `@repo/web` — use `authDb` from `@repo/db` instead
 - **NEVER** skip `authMiddleware` on protected server functions, even inside `_auth` routes
 - Generic type params must be `T`-prefixed: `TArgs`, `TReturn`, `TData`
 

@@ -2,6 +2,7 @@ import "@tanstack/react-start/server-only";
 import { createLogger } from "@repo/logger";
 import { ClientContract, ZenStackClient } from "@zenstackhq/orm";
 import { PostgresDialect } from "@zenstackhq/orm/dialects/postgres";
+import { PolicyPlugin } from "@zenstackhq/plugin-policy";
 import { Pool } from "pg";
 
 import { schema, SchemaType } from "../zenstack/schema";
@@ -39,11 +40,13 @@ export type DatabaseClient = ClientContract<SchemaType>;
 
 declare global {
   // eslint-disable-next-line no-var
-  var dbGlobal: DatabaseClient | undefined;
+  var authDbGlobal: DatabaseClient | undefined;
 }
 
-const db: DatabaseClient = globalThis.dbGlobal ?? getZenstackClient();
+const authDb = (globalThis.authDbGlobal ?? getZenstackClient()).$use(new PolicyPlugin());
 
-export { db };
+export { authDb };
 
-if (process.env.NODE_ENV !== "production") globalThis.dbGlobal = db;
+if (process.env.NODE_ENV !== "production") {
+  globalThis.authDbGlobal = authDb;
+}

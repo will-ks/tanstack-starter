@@ -80,8 +80,14 @@ export default defineConfig({
         name: "eslint-tanstack-query",
         specifier: "@tanstack/eslint-plugin-query",
       },
+      {
+        name: "eslint-local",
+        specifier: "./tooling/lint/no-db-internal.cjs",
+      },
     ],
-    rules: {},
+    rules: {
+      "eslint-local/no-db-internal": "error",
+    },
     ignorePatterns: [
       "dist",
       ".wrangler",

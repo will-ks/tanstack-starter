@@ -1,7 +1,7 @@
 import "@tanstack/react-start/server-only";
 import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
-import { db } from "@repo/db";
+import { db } from "@repo/db/internal";
 import { createLogger } from "@repo/logger";
 import { mailer } from "@repo/mailer/index";
 import { zenstackAdapter } from "@zenstackhq/better-auth";

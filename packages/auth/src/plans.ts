@@ -1,8 +1,8 @@
 import "@tanstack/react-start/server-only";
-import { db } from "@repo/db";
+import { DatabaseClient } from "@repo/db";
 
-export async function getOrgPlan(organizationId: string) {
-  const org = await db.organization.findUnique({
+export async function getOrgPlan(organizationId: string, authedDb: DatabaseClient) {
+  const org = await authedDb.organization.findUnique({
     where: { id: organizationId },
     include: { plan: true },
   });
@@ -10,6 +10,6 @@ export async function getOrgPlan(organizationId: string) {
   return org?.plan ?? null;
 }
 
-export async function getAvailablePlans() {
-  return db.plan.findMany({ orderBy: { sortOrder: "asc" } });
+export async function getAvailablePlans(authedDb: DatabaseClient) {
+  return authedDb.plan.findMany({ orderBy: { sortOrder: "asc" } });
 }
