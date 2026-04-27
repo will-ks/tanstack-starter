@@ -1,22 +1,8 @@
-import { authMiddleware } from "@repo/auth/tanstack/middleware";
-import { send } from "@repo/jobs";
 import { Button } from "@repo/ui/components/button";
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { z } from "zod";
 
-const greetingSchema = z.object({
-  name: z.string().min(1).max(100),
-});
-
-const $sendGreeting = createServerFn({ method: "POST" })
-  .middleware([authMiddleware])
-  .inputValidator(greetingSchema)
-  .handler(async ({ data }) => {
-    const jobId = await send("greeting", { name: data.name });
-    return { jobId };
-  });
+import { $sendGreeting } from "~/utils/jobs.functions";
 
 export const Route = createFileRoute("/_auth/app/jobs/")({
   component: JobsPage,

@@ -18,6 +18,7 @@ TanStack Start app — file-based routing, React 19, Nitro server, React Compile
 │   │   └── api/auth/        # Better Auth API handler
 │   ├── components/          # App-specific components
 │   ├── server/plugins/      # Nitro server plugins (jobs registration)
+│   ├── utils/               # Server functions (createServerFn), imported via ~/ alias
 │   ├── router.tsx           # Router config
 │   └── styles.css           # App styles
 ├── public/                  # Static assets
@@ -33,10 +34,25 @@ TanStack Start app — file-based routing, React 19, Nitro server, React Compile
 
 ## Server Functions
 
+Server functions live in `src/utils/` as `.functions.ts` files — not co-located with routes.
+
 - Prefix with `$` (`$getTodos`)
 - Wrap in `createServerFn()` from `@tanstack/react-start`
 - **Always** apply `authMiddleware` on protected server functions, even inside `_auth` routes
 - Static imports only — never dynamic import server functions
+- Import from routes using the `~/` alias: `import { $getTodos } from "~/utils/todos.functions"`
+
+```typescript
+// src/utils/billing.functions.ts
+export const $getBillingData = createServerFn({ method: "GET" })
+  .middleware([authMiddleware])
+  .handler(async ({ context }) => {
+    /* ... */
+  });
+
+// src/routes/_auth/app/billing/index.tsx
+import { $getBillingData } from "~/utils/billing.functions";
+```
 
 ## Data Fetching Pattern
 

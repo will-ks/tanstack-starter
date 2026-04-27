@@ -1,18 +1,8 @@
 import { authClient } from "@repo/auth/auth-client";
-import { getAvailablePlans, getOrgPlan } from "@repo/auth/plans";
-import { authMiddleware } from "@repo/auth/tanstack/middleware";
 import { Button } from "@repo/ui/components/button";
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 
-const $getBillingData = createServerFn({ method: "GET" })
-  .middleware([authMiddleware])
-  .handler(async ({ context }) => {
-    const { organizationId } = context;
-    const currentPlan = organizationId ? await getOrgPlan(organizationId) : null;
-    const availablePlans = await getAvailablePlans();
-    return { currentPlan, availablePlans };
-  });
+import { $getBillingData } from "~/utils/billing.functions";
 
 export const Route = createFileRoute("/_auth/app/billing/")({
   component: BillingPage,

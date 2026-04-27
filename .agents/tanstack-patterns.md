@@ -53,21 +53,33 @@ TanStack Start strips any code not referenced by a `createServerFn` handler from
 - Only code inside `createServerFn` handlers goes to server bundles
 - Code outside handlers is included in both bundles
 
-## Importing Server Functions
+## Server Function Organization
 
-Server functions wrapped in `createServerFn` can be imported statically. Never use dynamic imports for server-only code in components. Prefix server function names with `$` (e.g. `$getUser`) for easier identification.
+Server functions live in `src/utils/` as `.functions.ts` files. They are imported statically from routes using the `~/` alias. Never define server functions inline in route files.
+
+```typescript
+// src/utils/todos.functions.ts
+export const $getTodos = createServerFn({ method: "GET" }).handler(async () => {
+  /* ... */
+});
+
+// src/routes/_auth/app/todos/index.tsx
+import { $getTodos } from "~/utils/todos.functions";
+```
+
+Never use dynamic imports for server functions:
 
 ```typescript
 // Bad: dynamic import causes bundler issues
 const rolesQuery = useQuery({
   queryFn: async () => {
-    const { $listRoles } = await import("~/utils/roles.server");
+    const { $listRoles } = await import("~/utils/roles.functions");
     return $listRoles({ data: {} });
   },
 });
 
 // Good: static import
-import { $listRoles } from "~/utils/roles.server";
+import { $listRoles } from "~/utils/roles.functions";
 
 const rolesQuery = useQuery({
   queryFn: async () => $listRoles({ data: {} }),

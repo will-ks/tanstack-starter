@@ -44,7 +44,7 @@
 | Add background job         | `packages/jobs/src/workers/`                    | Create queue, add handler, register in `workers/index.ts`            |
 | Queue a job                | `send()` from `@repo/jobs`                      | Call from server functions                                           |
 | Monitor jobs               | `pnpm jobs:dashboard`                           | Requires `DATABASE_URL` in environment                               |
-| Add server function        | Co-locate with route or in `packages/`          | Prefix with `$`, wrap in `createServerFn`                            |
+| Add server function        | `apps/web/src/utils/`                           | Prefix with `$`, wrap in `createServerFn`, use `~/` alias in routes  |
 | Add TanStack query         | Near the consuming code or in auth `queries.ts` | Use `queryOptions()` pattern                                         |
 | Lint/format config         | `vite.config.ts` (root)                         | Oxfmt + Oxlint via Vite+                                             |
 | Vite/build config          | `apps/web/vite.config.ts`                       | TanStack Start, Nitro, React Compiler                                |
