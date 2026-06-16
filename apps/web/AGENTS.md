@@ -78,8 +78,14 @@ export const myQueryOptions = () =>
 - React Compiler via `@rolldown/plugin-babel` with `reactCompilerPreset()`
 - Devtools enabled in development
 
+## Mutations
+
+All writes **must** go through `useMutation`. A global `MutationCache` in `src/router.tsx` automatically invalidates all queries after every successful mutation — **never call `invalidateQueries` manually**. See `.agents/tanstack-patterns.md#mutations--cache-invalidation` for opt-out mechanisms (`meta.invalidates`, `staleTime: "static"`).
+
 ## Anti-Patterns
 
+- **NEVER** call mutating functions (checkout, portal, API POSTs) fire-and-forget in event handlers — always wrap in `useMutation` so the global `MutationCache` can invalidate
+- **NEVER** inline `queryKey` arrays in loaders or components — always use a `*QueryOptions()` factory from `src/utils/`
 - **NEVER** skip `authMiddleware` on protected server functions
 - **NEVER** dynamically import server functions
 - **NEVER** edit `routeTree.gen.ts`

@@ -1,16 +1,14 @@
 import { authClient } from "@repo/auth/auth-client";
 import { Button } from "@repo/ui/components/button";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
-import { $getBillingData } from "~/utils/billing.functions";
+import { billingQueryOptions } from "~/utils/billing.queries";
 
 export const Route = createFileRoute("/_auth/app/billing/")({
   component: BillingPage,
   loader: async ({ context }) => {
-    const billingData = await context.queryClient.ensureQueryData({
-      queryKey: ["billing"],
-      queryFn: () => $getBillingData(),
-    });
+    const billingData = await context.queryClient.ensureQueryData(billingQueryOptions());
     return { billingData };
   },
 });
@@ -18,6 +16,14 @@ export const Route = createFileRoute("/_auth/app/billing/")({
 function BillingPage() {
   const { billingData } = Route.useLoaderData();
   const { currentPlan, availablePlans } = billingData;
+
+  const checkoutMutation = useMutation({
+    mutationFn: (productId: string) => authClient.checkout({ products: [productId] }),
+  });
+
+  const portalMutation = useMutation({
+    mutationFn: () => authClient.customer.portal(),
+  });
 
   return (
     <div className="flex flex-col gap-4 text-sm">
@@ -55,14 +61,22 @@ function BillingPage() {
                 <Button
                   size="sm"
                   variant={currentPlan?.slug === plan.slug ? "outline" : "default"}
-                  disabled={currentPlan?.slug === plan.slug || !plan.polarProductId}
+                  disabled={
+                    currentPlan?.slug === plan.slug ||
+                    !plan.polarProductId ||
+                    checkoutMutation.isPending
+                  }
                   onClick={() => {
                     if (plan.polarProductId) {
-                      authClient.checkout({ products: [plan.polarProductId] });
+                      checkoutMutation.mutate(plan.polarProductId);
                     }
                   }}
                 >
-                  {currentPlan?.slug === plan.slug ? "Current" : "Upgrade"}
+                  {checkoutMutation.isPending
+                    ? "Redirecting..."
+                    : currentPlan?.slug === plan.slug
+                      ? "Current"
+                      : "Upgrade"}
                 </Button>
               </div>
             ))}
@@ -72,8 +86,13 @@ function BillingPage() {
 
       <section className="flex flex-col gap-2">
         <h3 className="font-medium">Manage Subscription</h3>
-        <Button size="sm" variant="outline" onClick={() => authClient.customer.portal()}>
-          Open Billing Portal
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={portalMutation.isPending}
+          onClick={() => portalMutation.mutate()}
+        >
+          {portalMutation.isPending ? "Opening..." : "Open Billing Portal"}
         </Button>
       </section>
     </div>

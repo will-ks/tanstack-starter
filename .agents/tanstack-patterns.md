@@ -45,6 +45,58 @@ export const todosQueryOptions = () =>
   });
 ```
 
+## Mutations & Cache Invalidation
+
+A global `MutationCache` in `apps/web/src/router.tsx` automatically invalidates all queries after every successful mutation (the "Remix semantic"). This eliminates the "forgot to invalidate" bug class entirely.
+
+### Rules
+
+1. **Always wrap writes in `useMutation`** — never call mutating functions fire-and-forget in `onClick`/`onSubmit`. If a write isn't a `useMutation`, the cache won't know to revalidate.
+
+```typescript
+// Bad: fire-and-forget, cache never invalidates
+<Button onClick={() => authClient.checkout({ products: [id] })}>
+
+// Good: useMutation triggers automatic invalidation
+const checkoutMutation = useMutation({
+  mutationFn: (productId: string) =>
+    authClient.checkout({ products: [productId] }),
+});
+<Button onClick={() => checkoutMutation.mutate(id)} />
+```
+
+2. **Never call `invalidateQueries` manually** — the global `MutationCache` handles it. Manual invalidation is only needed for imperative cache updates outside mutations (e.g., `setQueryData` on sign-out).
+
+3. **Always use query options factories** — never inline `queryKey` arrays in loaders or components. Create a factory in `src/utils/<feature>.queries.ts`:
+
+```typescript
+// src/utils/billing.queries.ts
+export const billingQueryOptions = () =>
+  queryOptions({
+    queryKey: ["billing"],
+    queryFn: () => $getBillingData(),
+  });
+
+// In the route loader
+loader: async ({ context }) => {
+  const data = await context.queryClient.ensureQueryData(billingQueryOptions());
+  return { data };
+};
+```
+
+### Opting out of automatic invalidation
+
+- **Scope a mutation**: set `meta: { invalidates: [["key"]] }` to invalidate only the listed query keys instead of all:
+
+```typescript
+useMutation({
+  mutationFn: updateLabel,
+  meta: { invalidates: [["labels"]] },
+});
+```
+
+- **Exempt a query**: set `staleTime: "static"` on its `queryOptions` to prevent it from ever auto-refetching (useful for static config, lookup tables).
+
 ## Environment Shaking
 
 TanStack Start strips any code not referenced by a `createServerFn` handler from the client build.
