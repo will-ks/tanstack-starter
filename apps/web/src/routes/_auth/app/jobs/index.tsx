@@ -1,4 +1,5 @@
 import { Button } from "@repo/ui/components/button";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -10,17 +11,13 @@ export const Route = createFileRoute("/_auth/app/jobs/")({
 
 function JobsPage() {
   const [jobId, setJobId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  async function handleSendGreeting() {
-    setLoading(true);
-    try {
-      const result = await $sendGreeting({ data: { name: "World" } });
-      setJobId(result.jobId ?? "failed to queue");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const greetingMutation = useMutation({
+    mutationFn: () => $sendGreeting({ data: { name: "World" } }),
+    onSuccess: (data) => {
+      setJobId(data.jobId ?? "failed to queue");
+    },
+  });
 
   return (
     <div className="flex flex-col items-center gap-3 text-center text-sm">
@@ -32,8 +29,12 @@ function JobsPage() {
         Trigger a background job using pg-boss. The worker logs the greeting to the server console.
       </p>
 
-      <Button onClick={handleSendGreeting} disabled={loading} size="sm">
-        {loading ? "Sending..." : "Send greeting job"}
+      <Button
+        onClick={() => greetingMutation.mutate()}
+        disabled={greetingMutation.isPending}
+        size="sm"
+      >
+        {greetingMutation.isPending ? "Sending..." : "Send greeting job"}
       </Button>
 
       {jobId && (

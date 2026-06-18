@@ -12,13 +12,3 @@ export const $getBillingData = createServerFn({ method: "GET" })
     const availablePlans = await getAvailablePlans(authedDb);
     return { currentPlan, availablePlans };
   });
-
-export const $getPlansData = createServerFn({ method: "GET" })
-  .middleware([authMiddleware])
-  .handler(async ({ context }) => {
-    const { organizationId } = context;
-    const authedDb = authDb.$setAuth(context);
-    const currentPlan = organizationId ? await getOrgPlan(organizationId, authedDb) : null;
-    const availablePlans = await getAvailablePlans(authedDb);
-    return { currentPlan, availablePlans };
-  });

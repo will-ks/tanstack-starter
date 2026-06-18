@@ -1,11 +1,10 @@
 import { SiGithub, SiGoogle } from "@icons-pack/react-simple-icons";
 import { authClient } from "@repo/auth/auth-client";
-import { authQueryOptions } from "@repo/auth/tanstack/queries";
 import { Button } from "@repo/ui/components/button";
 import { Input } from "@repo/ui/components/input";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/components/input-otp";
 import { Label } from "@repo/ui/components/label";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { GalleryVerticalEndIcon, LoaderCircleIcon } from "lucide-react";
 import { useState } from "react";
@@ -19,7 +18,6 @@ export const Route = createFileRoute("/_guest/login")({
 
 function LoginForm() {
   const { redirectUrl } = Route.useRouteContext();
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -56,7 +54,6 @@ function LoginForm() {
       );
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries(authQueryOptions());
       await navigate({ to: redirectUrl });
     },
   });
