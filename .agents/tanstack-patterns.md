@@ -51,7 +51,7 @@ A global `MutationCache` in `apps/web/src/router.tsx` automatically invalidates 
 
 ### Rules
 
-1. **Always wrap writes in `useMutation`** — never call mutating functions fire-and-forget in `onClick`/`onSubmit`. If a write isn't a `useMutation`, the cache won't know to revalidate.
+1. **Always wrap writes in `useMutation`** — never call mutating functions fire-and-forget in `onClick`/`onSubmit`. If a write isn't a `useMutation`, the cache won't know to revalidate. _(enforced by `eslint-local/no-fire-and-forget-mutation`)_
 
 ```typescript
 // Bad: fire-and-forget, cache never invalidates
@@ -65,9 +65,9 @@ const checkoutMutation = useMutation({
 <Button onClick={() => checkoutMutation.mutate(id)} />
 ```
 
-2. **Never call `invalidateQueries` manually** — the global `MutationCache` handles it. Manual invalidation is only needed for imperative cache updates outside mutations (e.g., `setQueryData` on sign-out).
+2. **Never call `invalidateQueries` manually** — the global `MutationCache` handles it. Manual invalidation is only needed for imperative cache updates outside mutations (e.g., `setQueryData` on sign-out). _(enforced by `eslint-local/no-manual-invalidate-queries`; allowlist = `apps/web/src/router.tsx`)_
 
-3. **Always use query options factories** — never inline `queryKey` arrays in loaders or components. Create a factory in `src/utils/<feature>.queries.ts`:
+3. **Always use query options factories** — never inline `queryKey` arrays in loaders or components. Create a factory in `src/utils/<feature>.queries.ts`: _(enforced by `eslint-tanstack-query/prefer-query-options`)_
 
 ```typescript
 // src/utils/billing.queries.ts
@@ -109,6 +109,10 @@ TanStack Start strips any code not referenced by a `createServerFn` handler from
 
 Server functions live in `src/utils/` as `.functions.ts` files. They are imported statically from routes using the `~/` alias. Never define server functions inline in route files.
 
+- Location: `.functions.ts` or `.server.ts` under `apps/web/src/utils/` _(enforced by `eslint-local/server-fn-in-utils-only`)_
+- Name: export identifier must start with `$` _(enforced by `eslint-local/server-fn-name-prefix`)_
+- Import: static imports only _(enforced by `eslint-local/no-dynamic-server-import`)_
+
 ```typescript
 // src/utils/todos.functions.ts
 export const $getTodos = createServerFn({ method: "GET" }).handler(async () => {
@@ -119,7 +123,7 @@ export const $getTodos = createServerFn({ method: "GET" }).handler(async () => {
 import { $getTodos } from "~/utils/todos.functions";
 ```
 
-Never use dynamic imports for server functions:
+Never use dynamic imports for server functions: _(enforced by `eslint-local/no-dynamic-server-import`)_
 
 ```typescript
 // Bad: dynamic import causes bundler issues

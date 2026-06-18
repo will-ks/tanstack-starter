@@ -21,6 +21,6 @@
   - Server call: executed directly on the server.
   - Client call: treated as RPC and executed through an HTTP API request.
 - Treat protected server functions like protected API routes from a security perspective.
-- If a server function requires auth, always apply `authMiddleware` from `packages/auth/src/tanstack/middleware.ts`. This applies even when called from an auth-protected route (`routes/_auth/**`).
+- If a server function requires auth, always apply `authMiddleware` from `packages/auth/src/tanstack/middleware.ts`. This applies even when called from an auth-protected route (`routes/_auth/**`). _(enforced by `eslint-local/protected-server-fn-requires-auth-middleware`; also accepts `freshAuthMiddleware`; allowlist by filename for public fns)_
 - Route-level `beforeLoad` guards protect route navigation/rendering, but they do not replace server-function authorization.
 - When auth is required, middleware-provided user context is the source of truth.

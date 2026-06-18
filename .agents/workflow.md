@@ -16,6 +16,10 @@ Don't build after every change. If lint passes; assume changes work.
 
 Vitest hasn't been set up yet. Prefer lint checks for now.
 
+## Lint rules
+
+Custom rules live in `tooling/lint/rules/` and are documented in `tooling/lint/README.md`. Conventions in `AGENTS.md` and `.agents/*.md` marked "enforced by" are mechanically verified by `pnpm lint`. Opt out per-line with `// eslint-local/<rule-name>: off`.
+
 ## Formatting
 
 Oxfmt (via Vite+) is configured for consistent code formatting via `vp fmt`. It runs automatically on commit via Vite+ pre-commit hooks, so manual formatting is not necessary.

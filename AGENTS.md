@@ -69,20 +69,33 @@ pnpm ui:web       # shadcn/ui CLI (adds to apps/web)
 - **Oxfmt** (not Prettier): double quotes, 100 char width, trailing commas, LF endings
 - **Oxlint** (not ESLint): type-aware linting with TanStack Router/Query plugins + React Compiler rules
 - **Path aliases**: `~/` → `apps/web/src/`, `@repo/*` → workspace packages
-- **Icon imports**: `lucide-react` with `Icon` suffix (`Loader2Icon`), brand icons from `@icons-pack/react-simple-icons`
-- **Server functions**: prefix with `$` (`$getUser`), static imports only (never dynamic)
-- **Query pattern**: `queryOptions()` factories, `ensureQueryData` in loaders
+- **Icon imports**: `lucide-react` with `Icon` suffix (`Loader2Icon`), brand icons from `@icons-pack/react-simple-icons` _(enforced by `eslint-local/icon-import-suffix`)_
+- **Server functions**: prefix with `$` (`$getUser`), static imports only (never dynamic), defined in `apps/web/src/utils/**` _(enforced by `server-fn-name-prefix`, `no-dynamic-server-import`, `server-fn-in-utils-only`)_
+- **Query pattern**: `queryOptions()` factories, `ensureQueryData` in loaders _(enforced by `eslint-tanstack-query/prefer-query-options`)_
 - **Tests**: Not set up yet. Lint is the validation gate.
 
 ## Anti-Patterns
 
 - **NEVER** use `as`, `satisfies`, or manual generic params — infer types instead (see `.agents/typescript.md`)
-- **NEVER** dynamically import server functions — use static imports
+- **NEVER** dynamically import server functions — use static imports _(enforced by `eslint-local/no-dynamic-server-import`)_
 - **NEVER** use pnpm/npm/yarn directly — use `vp` commands (see `.agents/vite-plus.md`)
 - **NEVER** edit generated files in `packages/db/zenstack/` (except `schema.zmodel`)
-- **NEVER** import raw `db` from `@repo/db/internal` in `@repo/web` — use `authDb` from `@repo/db` instead
-- **NEVER** skip `authMiddleware` on protected server functions, even inside `_auth` routes
+- **NEVER** import raw `db` from `@repo/db/internal` in `@repo/web` — use `authDb` from `@repo/db` instead _(enforced by `eslint-local/no-db-internal`)_
+- **NEVER** skip `authMiddleware` on protected server functions, even inside `_auth` routes _(enforced by `eslint-local/protected-server-fn-requires-auth-middleware`)_
 - Generic type params must be `T`-prefixed: `TArgs`, `TReturn`, `TData`
+
+## Mechanically Enforced Rules
+
+Conventions backed by lint rules in `tooling/lint/` and TanStack's ESLint plugins (loaded via `vite.config.ts` → `lint.jsPlugins`). Run `pnpm lint` to verify. See `tooling/lint/README.md` for the full list.
+
+- **Server functions**: `$`-prefix, defined in `apps/web/src/utils/**/*.{functions,server}.ts`, static imports only, `authMiddleware`/`freshAuthMiddleware` chained
+- **TanStack Query**: prefer `queryOptions()`/`infiniteQueryOptions()` factories (rule `prefer-query-options`); never inline `useQuery({ queryKey, queryFn })` in components
+- **Cache invalidation**: only via global `MutationCache` in `apps/web/src/router.tsx`; never call `queryClient.invalidateQueries()` elsewhere
+- **Mutations**: writes must go through `useMutation`, never fire-and-forget in JSX event handlers
+- **Icons**: `lucide-react` imports must end in `Icon`; `@icons-pack/react-simple-icons` must start with `Si`
+- **DB**: never import `db` from `@repo/db/internal` in the web app
+
+Opt out per-line with `// eslint-local/<rule-name>: off`.
 
 ## Topic-specific Guidelines
 
