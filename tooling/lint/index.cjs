@@ -24,6 +24,7 @@ const noManualInvalidateQueries = require("./rules/no-manual-invalidate-queries.
 const iconImportSuffix = require("./rules/icon-import-suffix.cjs");
 const noFireAndForgetMutation = require("./rules/no-fire-and-forget-mutation.cjs");
 const protectedServerFnRequiresAuthMiddleware = require("./rules/protected-server-fn-requires-auth-middleware.cjs");
+const noPureCrudServerFn = require("./rules/no-pure-crud-server-fn.cjs");
 
 module.exports = {
   rules: {
@@ -35,5 +36,6 @@ module.exports = {
     "icon-import-suffix": iconImportSuffix,
     "no-fire-and-forget-mutation": noFireAndForgetMutation,
     "protected-server-fn-requires-auth-middleware": protectedServerFnRequiresAuthMiddleware,
+    "no-pure-crud-server-fn": noPureCrudServerFn,
   },
 };

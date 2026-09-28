@@ -21,6 +21,8 @@
     "@tanstack/react-router": "catalog:",
     "@tanstack/react-router-ssr-query": "catalog:",
     "@tanstack/react-start": "catalog:",
+    "@zenstackhq/server": "catalog:",
+    "@zenstackhq/tanstack-query": "catalog:",
     "date-fns": "catalog:",
     "lucide-react": "catalog:",
     "motion": "catalog:",

@@ -46,6 +46,8 @@
 | Monitor jobs               | `pnpm jobs:dashboard`                           | Requires `DATABASE_URL` in environment                               |
 | Add server function        | `apps/web/src/utils/`                           | Prefix with `$`, wrap in `createServerFn`, use `~/` alias in routes  |
 | Add TanStack query         | Near the consuming code or in auth `queries.ts` | Use `queryOptions()` pattern                                         |
+| Auto-CRUD over HTTP        | `apps/web/src/routes/api/model/$.ts`            | ZenStack endpoint — every model gets `/api/model/<model>/<op>`       |
+| Auto-CRUD React hooks      | `apps/web/src/lib/zenstack.ts`                  | `useDb()` returns typed TanStack Query hooks per model               |
 | Lint/format config         | `vite.config.ts` (root)                         | Oxfmt + Oxlint via Vite+                                             |
 | Vite/build config          | `apps/web/vite.config.ts`                       | TanStack Start, Nitro, React Compiler                                |
 
@@ -72,6 +74,7 @@ pnpm ui:web       # shadcn/ui CLI (adds to apps/web)
 - **Icon imports**: `lucide-react` with `Icon` suffix (`Loader2Icon`), brand icons from `@icons-pack/react-simple-icons` _(enforced by `eslint-local/icon-import-suffix`)_
 - **Server functions**: prefix with `$` (`$getUser`), static imports only (never dynamic), defined in `apps/web/src/utils/**` _(enforced by `server-fn-name-prefix`, `no-dynamic-server-import`, `server-fn-in-utils-only`)_
 - **Query pattern**: `queryOptions()` factories, `ensureQueryData` in loaders _(enforced by `eslint-tanstack-query/prefer-query-options`)_
+- **Auto-CRUD first**: prefer `useDb()` hooks (or `authDb.<model>.<op>()` in loaders) over hand-written server functions for pure CRUD. See `.agents/tanstack-patterns.md#auto-crud-vs-server-functions` _(enforced by `eslint-local/no-pure-crud-server-fn`)_
 - **Tests**: Not set up yet. Lint is the validation gate.
 
 ## Anti-Patterns
@@ -92,6 +95,7 @@ Conventions backed by lint rules in `tooling/lint/` and TanStack's ESLint plugin
 - **TanStack Query**: prefer `queryOptions()`/`infiniteQueryOptions()` factories (rule `prefer-query-options`); never inline `useQuery({ queryKey, queryFn })` in components
 - **Cache invalidation**: only via global `MutationCache` in `apps/web/src/router.tsx`; never call `queryClient.invalidateQueries()` elsewhere
 - **Mutations**: writes must go through `useMutation`, never fire-and-forget in JSX event handlers
+- **Auto-CRUD**: pure CRUD belongs in `useDb()` hooks, not server functions (rule `no-pure-crud-server-fn`)
 - **Icons**: `lucide-react` imports must end in `Icon`; `@icons-pack/react-simple-icons` must start with `Si`
 - **DB**: never import `db` from `@repo/db/internal` in the web app
 

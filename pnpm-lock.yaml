@@ -91,19 +91,25 @@ catalogs:
       specifier: ^6.0.1
       version: 6.0.1
     '@zenstackhq/better-auth':
-      specifier: ^3.3.3
+      specifier: 3.5.6
       version: 3.5.6
     '@zenstackhq/cli':
-      specifier: ^3.3.3
+      specifier: 3.5.6
       version: 3.5.6
     '@zenstackhq/orm':
-      specifier: ^3.3.3
+      specifier: 3.5.6
       version: 3.5.6
     '@zenstackhq/plugin-policy':
-      specifier: ^3.3.3
+      specifier: 3.5.6
       version: 3.5.6
     '@zenstackhq/schema':
-      specifier: ^3.3.3
+      specifier: 3.5.6
+      version: 3.5.6
+    '@zenstackhq/server':
+      specifier: 3.5.6
+      version: 3.5.6
+    '@zenstackhq/tanstack-query':
+      specifier: 3.5.6
       version: 3.5.6
     babel-plugin-react-compiler:
       specifier: ^1.0.0
@@ -240,6 +246,12 @@ importers:
       '@tanstack/react-start':
         specifier: 'catalog:'
         version: 1.167.16(@voidzero-dev/vite-plus-core@0.1.16(@types/node@24.12.2)(jiti@2.6.1)(tsx@4.21.0)(typescript@6.0.2))(crossws@0.4.4(srvx@0.11.15))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@zenstackhq/server':
+        specifier: 'catalog:'
+        version: 3.5.6(express@5.2.1)(hono@4.12.12)(pg@8.20.0)(zod@4.3.6)
+      '@zenstackhq/tanstack-query':
+        specifier: 'catalog:'
+        version: 3.5.6(@tanstack/react-query@5.97.0(react@19.2.5))
       date-fns:
         specifier: 'catalog:'
         version: 4.1.0
@@ -379,13 +391,13 @@ importers:
         version: 1.167.16(crossws@0.4.4(srvx@0.11.15))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.0.8(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0))
       '@zenstackhq/better-auth':
         specifier: 'catalog:'
-        version: 3.5.6(@better-auth/core@1.6.2(@better-auth/utils@0.4.0)(@better-fetch/fetch@1.1.21)(@opentelemetry/api@1.9.1)(better-call@1.3.5(zod@4.3.6))(jose@6.2.2)(kysely@0.28.15)(nanostores@1.2.0))(better-auth@1.6.2(@opentelemetry/api@1.9.1)(@tanstack/react-start@1.167.16(crossws@0.4.4(srvx@0.11.15))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.0.8(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)))(pg@8.20.0)(prisma@6.19.3(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(solid-js@1.9.12))(pg@8.20.0)(zod@4.3.6)
+        version: 3.5.6(@better-auth/core@1.6.2(@better-auth/utils@0.4.0)(@better-fetch/fetch@1.1.21)(@opentelemetry/api@1.9.1)(better-call@1.3.5(zod@4.3.6))(jose@6.2.2)(kysely@0.29.2)(nanostores@1.2.0))(better-auth@1.6.2(@opentelemetry/api@1.9.1)(@tanstack/react-start@1.167.16(crossws@0.4.4(srvx@0.11.15))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.0.8(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)))(pg@8.20.0)(prisma@6.19.3(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(solid-js@1.9.12))(pg@8.20.0)(zod@4.3.6)
       '@zenstackhq/orm':
         specifier: 'catalog:'
         version: 3.5.6(pg@8.20.0)(zod@4.3.6)
       '@zenstackhq/plugin-policy':
         specifier: 'catalog:'
-        version: 3.5.6(kysely@0.28.15)(pg@8.20.0)(zod@4.3.6)
+        version: 3.5.6(kysely@0.29.2)(pg@8.20.0)(zod@4.3.6)
       '@zenstackhq/schema':
         specifier: 'catalog:'
         version: 3.5.6
@@ -3006,6 +3018,9 @@ packages:
       pg:
         optional: true
 
+  '@zenstackhq/client-helpers@3.5.6':
+    resolution: {integrity: sha512-J5w1qTVnGyWYD25EftbWWdMz9pfKabfJGwUp4Z7FVsU+yrT8+CzoyxK6lfYLpGQ5IaOwn+ti4ejr45uQyBvRLQ==}
+
   '@zenstackhq/common-helpers@3.5.6':
     resolution: {integrity: sha512-yh380RGsTq7g6pYjKIwAcKYtY7MdEzr8afzrnr2BfkTH90ETOvSIqLppNxWHTL2b8bnKsfHssHwxQ50z0tfjyg==}
 
@@ -3069,6 +3084,20 @@ packages:
       next:
         optional: true
       nuxt:
+        optional: true
+
+  '@zenstackhq/tanstack-query@3.5.6':
+    resolution: {integrity: sha512-4frE86rU7sLivcxFj4zrfLEv4IxTt6V7xdjGUKdl7NeUqTPmWMFCkibqGfWk+SoABiDwonG0PRcNHkYNjOnOsQ==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.0.0
+      '@tanstack/svelte-query': ^6.0.0
+      '@tanstack/vue-query': ^5.0.0
+    peerDependenciesMeta:
+      '@tanstack/react-query':
+        optional: true
+      '@tanstack/svelte-query':
+        optional: true
+      '@tanstack/vue-query':
         optional: true
 
   '@zenstackhq/zod@3.5.6':
@@ -4565,6 +4594,10 @@ packages:
   kysely@0.28.15:
     resolution: {integrity: sha512-r2clcf7HLWvDXaVUEvQymXJY4i3bSOIV3xsL/Upy3ZfSv5HeKsk9tsqbBptLvth5qHEIhxeHTA2jNLyQABkLBA==}
     engines: {node: '>=20.0.0'}
+
+  kysely@0.29.2:
+    resolution: {integrity: sha512-s6WVJyEZrbm6jhBpiKHsGHyePMrVQKJ85wZCFCr9W4QHv6WTjWIrdvTmO9hDEA3bNK0xkrE2DqrHsXMLWuZpQg==}
+    engines: {node: '>=22.0.0'}
 
   langium@3.5.0:
     resolution: {integrity: sha512-tnqVzWOkUcoiY0bWlyE8diFrZjmGBCF7MesC1bjUaZM+YGQSfdPC+KkhmHM0DWFG+uLcPxidKaPP1SYGtg3J0Q==}
@@ -6154,6 +6187,7 @@ packages:
 
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    deprecated: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
     hasBin: true
 
   valid-data-url@3.0.1:
@@ -6705,6 +6739,19 @@ snapshots:
       better-call: 1.3.5(zod@4.3.6)
       jose: 6.2.2
       kysely: 0.28.15
+      nanostores: 1.2.0
+      zod: 4.3.6
+
+  '@better-auth/core@1.6.2(@better-auth/utils@0.4.0)(@better-fetch/fetch@1.1.21)(@opentelemetry/api@1.9.1)(better-call@1.3.5(zod@4.3.6))(jose@6.2.2)(kysely@0.29.2)(nanostores@1.2.0)':
+    dependencies:
+      '@better-auth/utils': 0.4.0
+      '@better-fetch/fetch': 1.1.21
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/semantic-conventions': 1.40.0
+      '@standard-schema/spec': 1.1.0
+      better-call: 1.3.5(zod@4.3.6)
+      jose: 6.2.2
+      kysely: 0.29.2
       nanostores: 1.2.0
       zod: 4.3.6
 
@@ -9104,6 +9151,21 @@ snapshots:
       - sql.js
       - zod
 
+  '@zenstackhq/better-auth@3.5.6(@better-auth/core@1.6.2(@better-auth/utils@0.4.0)(@better-fetch/fetch@1.1.21)(@opentelemetry/api@1.9.1)(better-call@1.3.5(zod@4.3.6))(jose@6.2.2)(kysely@0.29.2)(nanostores@1.2.0))(better-auth@1.6.2(@opentelemetry/api@1.9.1)(@tanstack/react-start@1.167.16(crossws@0.4.4(srvx@0.11.15))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.0.8(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)))(pg@8.20.0)(prisma@6.19.3(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(solid-js@1.9.12))(pg@8.20.0)(zod@4.3.6)':
+    dependencies:
+      '@better-auth/core': 1.6.2(@better-auth/utils@0.4.0)(@better-fetch/fetch@1.1.21)(@opentelemetry/api@1.9.1)(better-call@1.3.5(zod@4.3.6))(jose@6.2.2)(kysely@0.29.2)(nanostores@1.2.0)
+      '@zenstackhq/common-helpers': 3.5.6
+      '@zenstackhq/language': 3.5.6
+      '@zenstackhq/orm': 3.5.6(pg@8.20.0)(zod@4.3.6)
+      better-auth: 1.6.2(@opentelemetry/api@1.9.1)(@tanstack/react-start@1.167.16(crossws@0.4.4(srvx@0.11.15))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vite@8.0.8(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)))(pg@8.20.0)(prisma@6.19.3(typescript@6.0.2))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(solid-js@1.9.12)
+      ts-pattern: 5.9.0
+    transitivePeerDependencies:
+      - better-sqlite3
+      - mysql2
+      - pg
+      - sql.js
+      - zod
+
   '@zenstackhq/cli@3.5.6(hono@4.12.12)(pg@8.20.0)(typescript@6.0.2)':
     dependencies:
       '@zenstackhq/common-helpers': 3.5.6
@@ -9144,6 +9206,13 @@ snapshots:
       - supports-color
       - typescript
 
+  '@zenstackhq/client-helpers@3.5.6':
+    dependencies:
+      '@zenstackhq/common-helpers': 3.5.6
+      '@zenstackhq/schema': 3.5.6
+      decimal.js: 10.6.0
+      superjson: 2.2.6
+
   '@zenstackhq/common-helpers@3.5.6': {}
 
   '@zenstackhq/language@3.5.6':
@@ -9175,11 +9244,11 @@ snapshots:
     optionalDependencies:
       pg: 8.20.0
 
-  '@zenstackhq/plugin-policy@3.5.6(kysely@0.28.15)(pg@8.20.0)(zod@4.3.6)':
+  '@zenstackhq/plugin-policy@3.5.6(kysely@0.29.2)(pg@8.20.0)(zod@4.3.6)':
     dependencies:
       '@zenstackhq/common-helpers': 3.5.6
       '@zenstackhq/orm': 3.5.6(pg@8.20.0)(zod@4.3.6)
-      kysely: 0.28.15
+      kysely: 0.29.2
       ts-pattern: 5.9.0
     transitivePeerDependencies:
       - better-sqlite3
@@ -9220,6 +9289,15 @@ snapshots:
       - mysql2
       - pg
       - sql.js
+
+  '@zenstackhq/tanstack-query@3.5.6(@tanstack/react-query@5.97.0(react@19.2.5))':
+    dependencies:
+      '@zenstackhq/client-helpers': 3.5.6
+      '@zenstackhq/common-helpers': 3.5.6
+      '@zenstackhq/schema': 3.5.6
+      decimal.js: 10.6.0
+    optionalDependencies:
+      '@tanstack/react-query': 5.97.0(react@19.2.5)
 
   '@zenstackhq/zod@3.5.6(zod@4.3.6)':
     dependencies:
@@ -10673,6 +10751,8 @@ snapshots:
   kleur@4.1.5: {}
 
   kysely@0.28.15: {}
+
+  kysely@0.29.2: {}
 
   langium@3.5.0:
     dependencies:

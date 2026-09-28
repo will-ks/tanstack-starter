@@ -94,6 +94,7 @@ export default defineConfig({
       "eslint-local/icon-import-suffix": "error",
       "eslint-local/no-fire-and-forget-mutation": "error",
       "eslint-local/protected-server-fn-requires-auth-middleware": "error",
+      "eslint-local/no-pure-crud-server-fn": "error",
       "eslint-tanstack-query/exhaustive-deps": "error",
       "eslint-tanstack-query/infinite-query-property-order": "error",
       "eslint-tanstack-query/mutation-property-order": "error",

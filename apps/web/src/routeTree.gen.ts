@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as GuestLoginRouteImport } from './routes/_guest/login'
 import { Route as AuthAppRouteRouteImport } from './routes/_auth/app/route'
 import { Route as AuthAppIndexRouteImport } from './routes/_auth/app/index'
+import { Route as ApiModelSplatRouteImport } from './routes/api/model/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthAppJobsIndexRouteImport } from './routes/_auth/app/jobs/index'
 import { Route as AuthAppBillingIndexRouteImport } from './routes/_auth/app/billing/index'
@@ -47,6 +48,11 @@ const AuthAppIndexRoute = AuthAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthAppRouteRoute,
 } as any)
+const ApiModelSplatRoute = ApiModelSplatRouteImport.update({
+  id: '/api/model/$',
+  path: '/api/model/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AuthAppRouteRouteWithChildren
   '/login': typeof GuestLoginRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/model/$': typeof ApiModelSplatRoute
   '/app/': typeof AuthAppIndexRoute
   '/app/billing/': typeof AuthAppBillingIndexRoute
   '/app/jobs/': typeof AuthAppJobsIndexRoute
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof GuestLoginRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/model/$': typeof ApiModelSplatRoute
   '/app': typeof AuthAppIndexRoute
   '/app/billing': typeof AuthAppBillingIndexRoute
   '/app/jobs': typeof AuthAppJobsIndexRoute
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/_auth/app': typeof AuthAppRouteRouteWithChildren
   '/_guest/login': typeof GuestLoginRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/model/$': typeof ApiModelSplatRoute
   '/_auth/app/': typeof AuthAppIndexRoute
   '/_auth/app/billing/': typeof AuthAppBillingIndexRoute
   '/_auth/app/jobs/': typeof AuthAppJobsIndexRoute
@@ -99,11 +108,19 @@ export interface FileRouteTypes {
     | '/app'
     | '/login'
     | '/api/auth/$'
+    | '/api/model/$'
     | '/app/'
     | '/app/billing/'
     | '/app/jobs/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/api/auth/$' | '/app' | '/app/billing' | '/app/jobs'
+  to:
+    | '/'
+    | '/login'
+    | '/api/auth/$'
+    | '/api/model/$'
+    | '/app'
+    | '/app/billing'
+    | '/app/jobs'
   id:
     | '__root__'
     | '/'
@@ -112,6 +129,7 @@ export interface FileRouteTypes {
     | '/_auth/app'
     | '/_guest/login'
     | '/api/auth/$'
+    | '/api/model/$'
     | '/_auth/app/'
     | '/_auth/app/billing/'
     | '/_auth/app/jobs/'
@@ -122,6 +140,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   GuestRouteRoute: typeof GuestRouteRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiModelSplatRoute: typeof ApiModelSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -167,6 +186,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AuthAppIndexRouteImport
       parentRoute: typeof AuthAppRouteRoute
+    }
+    '/api/model/$': {
+      id: '/api/model/$'
+      path: '/api/model/$'
+      fullPath: '/api/model/$'
+      preLoaderRoute: typeof ApiModelSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -237,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   GuestRouteRoute: GuestRouteRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiModelSplatRoute: ApiModelSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

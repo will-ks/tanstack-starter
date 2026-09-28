@@ -59,6 +59,12 @@ Every `createServerFn(...)` defined in `apps/web/src/utils/**` must chain `.midd
 
 Accepts either `ArrayExpression` (`[authMiddleware]`) or bare `Identifier` form. Convention source: `.agents/auth.md` → "Server Functions and Mutations".
 
+### `no-pure-crud-server-fn`
+
+Flag a `createServerFn(...)` whose `.handler` body is just a single `return authDb.<model>.<op>(...)` (or `authedDb.<op>(...)` after an optional `const authedDb = authDb.$setAuth(context);` setup line). Those handlers duplicate what ZenStack's auto-CRUD endpoint at `apps/web/src/routes/api/model/$.ts` and the `useDb()` typed hooks already provide — they should be replaced.
+
+Does **not** flag handlers with multiple statements, cross-package calls (`getOrgPlan`, `send`, …), non-ZenStack returns, or manual object literals. Convention source: `.agents/tanstack-patterns.md` → "Auto-CRUD vs Server Functions".
+
 ## Conventions NOT enforced here
 
 - **`as` / `satisfies` / manual generic params**: covered by Oxlint's TypeScript plugin.

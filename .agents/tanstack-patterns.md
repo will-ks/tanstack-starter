@@ -45,6 +45,53 @@ export const todosQueryOptions = () =>
   });
 ```
 
+## Auto-CRUD vs Server Functions (decision tree)
+
+ZenStack v3 exposes **auto-CRUD** for every model in `schema.zmodel` — no server function required. Before writing a `$fn`, check whether auto-CRUD already covers the case.
+
+### How auto-CRUD is wired
+
+- **HTTP endpoint**: `apps/web/src/routes/api/model/$.ts` mounts `TanStackStartHandler({ apiHandler, getClient })`. Every model gets `findMany / findUnique / create / update / delete / upsert / count / aggregate / groupBy` over `/api/model/<model>/<op>`. Access policies (`@@allow`) are enforced server-side by ZenStack.
+- **React hooks**: `useDb()` from `~/lib/zenstack` returns typed TanStack Query hooks per model:
+  ```tsx
+  const { organization, member, plan } = useDb();
+  const { data: orgs } = organization.useFindMany();
+  const createOrg = organization.useCreate();
+  // createOrg.mutate({ data: { name: "Acme", slug: "acme", planId: "..." } })
+  ```
+- Mutations auto-invalidate via the existing global `MutationCache` (same as hand-written `useMutation`).
+
+### When to use auto-CRUD (default)
+
+Use `useDb()` hooks directly when the operation is:
+
+- Pure CRUD on a single model (`findMany`, `create`, `update`, `delete`, etc.)
+- Read/write where the `@@allow` policy in `schema.zmodel` is the **only** authorization rule needed
+- Not crossing multiple models in a single transaction (use nested writes if ZenStack supports them)
+
+### When to write a server function instead
+
+Write a `$fn` in `apps/web/src/utils/<feature>.functions.ts` when the operation needs:
+
+- **Business logic** — e.g. `$getBillingData` joins `Organization` → `Plan` and computes entitlements via `getOrgPlan()`
+- **Side effects** — e.g. `$sendGreeting` queues a pg-boss job via `send()`
+- **Multi-step transactions** that can't be expressed as a single nested write
+- **Cross-package orchestration** — calls into `@repo/auth`, `@repo/mailer`, `@repo/jobs`, external APIs
+- **Aggregation** that doesn't map cleanly to ZenStack's `aggregate`/`groupBy`
+- **Custom authorization** beyond what `@@allow` can express
+
+### Quick check
+
+> "Could this be a single ZenStack client call with no extra logic?"
+>
+> **Yes** → use `useDb()` (or call `authDb.<model>.<op>()` inside a loader if you need it during SSR). **No** → write a `$fn`.
+
+A lint rule (`eslint-local/no-pure-crud-server-fn`) flags server functions whose `.handler` body is just a single `authDb.<model>.<op>(...)` return — those should be auto-CRUD instead.
+
+### Security note
+
+Every model in `schema.zmodel` is reachable via `/api/model/<model>/<op>`. Deny-by-default applies when no `@@allow` is declared, but **always audit new models** before adding them — see `packages/db/AGENTS.md` for the access-policy cheat sheet.
+
 ## Mutations & Cache Invalidation
 
 A global `MutationCache` in `apps/web/src/router.tsx` automatically invalidates all queries after every successful mutation (the "Remix semantic"). This eliminates the "forgot to invalidate" bug class entirely.
