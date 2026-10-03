@@ -1,4 +1,5 @@
 import "@tanstack/react-start/server-only";
+import { runtimeConfig } from "@repo/config/runtime";
 import { createLogger } from "@repo/logger";
 import { PgBoss, type SendOptions, type WorkHandler, type WorkOptions } from "pg-boss";
 
@@ -11,7 +12,7 @@ declare global {
 
 function createBoss(): PgBoss {
   const boss = new PgBoss({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: runtimeConfig.databaseUrl,
     schema: "pgboss",
     persistWarnings: true,
     warningRetentionDays: 30,
@@ -31,7 +32,7 @@ export async function getBoss(): Promise<PgBoss> {
     bossInstance = globalThis.jobsGlobal ?? createBoss();
     await bossInstance.start();
     logger.info("pg-boss started");
-    if (process.env.NODE_ENV !== "production") {
+    if (!runtimeConfig.isProduction) {
       globalThis.jobsGlobal = bossInstance;
     }
   }
@@ -43,7 +44,7 @@ export async function stopBoss(): Promise<void> {
     await bossInstance.stop();
     logger.info("pg-boss stopped");
     bossInstance = undefined;
-    if (process.env.NODE_ENV !== "production") {
+    if (!runtimeConfig.isProduction) {
       globalThis.jobsGlobal = undefined;
     }
   }

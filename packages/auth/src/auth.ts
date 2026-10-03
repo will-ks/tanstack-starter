@@ -1,6 +1,7 @@
 import "@tanstack/react-start/server-only";
 import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
 import { Polar } from "@polar-sh/sdk";
+import { runtimeConfig } from "@repo/config/runtime";
 import { db } from "@repo/db/internal";
 import { createLogger } from "@repo/logger";
 import { mailer } from "@repo/mailer/index";
@@ -12,13 +13,13 @@ import { tanstackStartCookies } from "better-auth/tanstack-start";
 const logger = createLogger({ name: "auth" });
 
 export const polarClient = new Polar({
-  accessToken: process.env.POLAR_ACCESS_TOKEN,
-  server: process.env.POLAR_SERVER === "production" ? "production" : "sandbox",
+  accessToken: runtimeConfig.polarAccessToken,
+  server: runtimeConfig.polarServer,
 });
 
 export const auth = betterAuth({
-  baseURL: process.env.VITE_BASE_URL,
-  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: runtimeConfig.baseUrl,
+  secret: runtimeConfig.betterAuthSecret,
   logger: {
     log: (level, message, ...args) => {
       logger[level]({ args }, message);
@@ -45,14 +46,14 @@ export const auth = betterAuth({
       createCustomerOnSignUp: false,
       use: [
         checkout({
-          successUrl: process.env.VITE_BASE_URL + "/app/billing?checkout=success",
+          successUrl: `${runtimeConfig.baseUrl}/app/billing?checkout=success`,
           authenticatedUsersOnly: true,
         }),
         portal({
-          returnUrl: process.env.VITE_BASE_URL + "/app/billing",
+          returnUrl: `${runtimeConfig.baseUrl}/app/billing`,
         }),
         webhooks({
-          secret: process.env.POLAR_WEBHOOK_SECRET!,
+          secret: runtimeConfig.polarWebhookSecret,
           onSubscriptionCreated: async (payload) => {
             logger.info({ payload }, "polar subscription created");
           },
@@ -81,12 +82,12 @@ export const auth = betterAuth({
   // https://www.better-auth.com/docs/concepts/oauth
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      clientId: runtimeConfig.githubClientId,
+      clientSecret: runtimeConfig.githubClientSecret,
     },
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: runtimeConfig.googleClientId,
+      clientSecret: runtimeConfig.googleClientSecret,
     },
   },
 

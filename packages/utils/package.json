@@ -1,5 +1,5 @@
 {
-  "name": "@repo/logger",
+  "name": "@repo/utils",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -7,17 +7,9 @@
     ".": "./src/index.ts"
   },
   "scripts": {},
-  "dependencies": {
-    "@repo/config": "workspace:*",
-    "pino": "^8.20.0",
-    "pino-pretty": "^11.0.0"
-  },
   "devDependencies": {
     "@repo/tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@tanstack/react-start": "catalog:"
   }
 }

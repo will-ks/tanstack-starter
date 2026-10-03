@@ -152,6 +152,10 @@ TanStack Start strips any code not referenced by a `createServerFn` handler from
 - Only code inside `createServerFn` handlers goes to server bundles
 - Code outside handlers is included in both bundles
 
+## Environment Variables
+
+All `process.env` access lives in one place: `runtimeConfig` from `@repo/config/runtime` (server-only, lazy fail-fast getters, validated at boot by `assertRuntimeConfig()` in the Nitro plugin). Client-safe `VITE_*` values are read via `buildConfig` from `@repo/config/build` (inlined at build time). Never read `process.env` or `import.meta.env` anywhere else _(enforced by `node/no-process-env`, Oxlint built-in)_. See `env-example` at the repo root for the full variable reference.
+
 ## Server Function Organization
 
 Server functions live in `src/utils/` as `.functions.ts` files. They are imported statically from routes using the `~/` alias. Never define server functions inline in route files.

@@ -1,4 +1,5 @@
 import "@tanstack/react-start/server-only";
+import { runtimeConfig } from "@repo/config/runtime";
 import { createLogger } from "@repo/logger";
 import { ClientContract, ZenStackClient } from "@zenstackhq/orm";
 import { PostgresDialect } from "@zenstackhq/orm/dialects/postgres";
@@ -19,7 +20,7 @@ export const getZenstackClient = () => {
   return new ZenStackClient(schema, {
     dialect: new PostgresDialect({
       pool: new Pool({
-        connectionString: process.env.DATABASE_URL,
+        connectionString: runtimeConfig.databaseUrl,
       }),
     }),
     log: (event) => {
@@ -47,6 +48,6 @@ const authDb = (globalThis.authDbGlobal ?? getZenstackClient()).$use(new PolicyP
 
 export { authDb };
 
-if (process.env.NODE_ENV !== "production") {
+if (!runtimeConfig.isProduction) {
   globalThis.authDbGlobal = authDb;
 }

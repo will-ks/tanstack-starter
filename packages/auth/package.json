@@ -9,6 +9,7 @@
   "dependencies": {
     "@polar-sh/better-auth": "catalog:",
     "@polar-sh/sdk": "catalog:",
+    "@repo/config": "workspace:*",
     "@repo/logger": "workspace:*",
     "@repo/mailer": "workspace:*",
     "@zenstackhq/better-auth": "catalog:",

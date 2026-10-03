@@ -1,0 +1,36 @@
+# Environment variable reference
+# Copy the variables you need into your local .env file (never commit secrets).
+#
+# Required variables are validated at server boot by @repo/config/runtime —
+# the app crashes with a precise error message when one is missing.
+# Enforced by Oxlint's node/no-process-env: never read process.env anywhere else.
+
+# ── Required (server, fail-fast at boot) ──────────────────────────────
+
+# PostgreSQL connection string
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mydb
+
+# Better Auth session signing secret — generate with: pnpm auth:secret
+BETTER_AUTH_SECRET=
+
+# Polar billing (polar.sh → Dashboard → Settings → API)
+POLAR_ACCESS_TOKEN=
+# Polar webhook secret (polar.sh → Dashboard → Developers → Webhooks)
+POLAR_WEBHOOK_SECRET=
+
+# OAuth providers
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+# ── Required (public, build-time inlined into the client bundle) ──────
+# VITE_-prefixed vars are read via @repo/config/build. Only put values here
+# that are safe to expose to the browser.
+VITE_BASE_URL=http://localhost:3000
+
+# ── Optional ──────────────────────────────────────────────────────────
+# "production" routes Polar to the live API; anything else uses sandbox.
+POLAR_SERVER=sandbox
+# fatal | error | warn | info | debug | trace — invalid values fail loudly.
+LOG_LEVEL=info

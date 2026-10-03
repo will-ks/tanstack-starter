@@ -42,6 +42,7 @@
 | Edit auth middleware       | `packages/auth/src/tanstack/middleware.ts`      | `authMiddleware`, `freshAuthMiddleware`                              |
 | Edit DB schema             | `packages/db/zenstack/schema.zmodel`            | Then run `pnpm db` to regenerate                                     |
 | Add background job         | `packages/jobs/src/workers/`                    | Create queue, add handler, register in `workers/index.ts`            |
+| Edit env/config access     | `packages/config/src/{runtime,build}.ts`        | Sole points for `process.env` / `import.meta.env`; see `env-example` |
 | Queue a job                | `send()` from `@repo/jobs`                      | Call from server functions                                           |
 | Monitor jobs               | `pnpm jobs:dashboard`                           | Requires `DATABASE_URL` in environment                               |
 | Add server function        | `apps/web/src/utils/`                           | Prefix with `$`, wrap in `createServerFn`, use `~/` alias in routes  |
@@ -75,6 +76,7 @@ pnpm ui:web       # shadcn/ui CLI (adds to apps/web)
 - **Server functions**: prefix with `$` (`$getUser`), static imports only (never dynamic), defined in `apps/web/src/utils/**` _(enforced by `server-fn-name-prefix`, `no-dynamic-server-import`, `server-fn-in-utils-only`)_
 - **Query pattern**: `queryOptions()` factories, `ensureQueryData` in loaders _(enforced by `eslint-tanstack-query/prefer-query-options`)_
 - **Auto-CRUD first**: prefer `useDb()` hooks (or `authDb.<model>.<op>()` in loaders) over hand-written server functions for pure CRUD. See `.agents/tanstack-patterns.md#auto-crud-vs-server-functions` _(enforced by `eslint-local/no-pure-crud-server-fn`)_
+- **Env access**: all `process.env` reads go through `runtimeConfig` from `@repo/config/runtime` (fail-fast, server-only); all client `import.meta.env.VITE_*` reads go through `buildConfig` from `@repo/config/build`. Missing required vars crash the server at boot via `assertRuntimeConfig()` in the Nitro plugin. Variable reference: `env-example` _(enforced by `node/no-process-env`, Oxlint built-in)_
 - **Tests**: Not set up yet. Lint is the validation gate.
 
 ## Anti-Patterns
@@ -96,6 +98,7 @@ Conventions backed by lint rules in `tooling/lint/` and TanStack's ESLint plugin
 - **Cache invalidation**: only via global `MutationCache` in `apps/web/src/router.tsx`; never call `queryClient.invalidateQueries()` elsewhere
 - **Mutations**: writes must go through `useMutation`, never fire-and-forget in JSX event handlers
 - **Auto-CRUD**: pure CRUD belongs in `useDb()` hooks, not server functions (rule `no-pure-crud-server-fn`)
+- **Env access**: `process.env` only inside `@repo/config/runtime`; `import.meta.env` only inside `@repo/config/build` (Oxlint built-in rule `node/no-process-env`)
 - **Icons**: `lucide-react` imports must end in `Icon`; `@icons-pack/react-simple-icons` must start with `Si`
 - **DB**: never import `db` from `@repo/db/internal` in the web app
 

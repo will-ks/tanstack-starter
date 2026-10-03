@@ -58,7 +58,7 @@ export default defineConfig({
 
   // Oxlint - https://oxc.rs/docs/guide/usage/linter/config
   lint: {
-    plugins: ["typescript", "react", "react-perf", "jsx-a11y"],
+    plugins: ["typescript", "react", "react-perf", "jsx-a11y", "node"],
     env: {
       builtin: true,
       node: true,
@@ -95,6 +95,7 @@ export default defineConfig({
       "eslint-local/no-fire-and-forget-mutation": "error",
       "eslint-local/protected-server-fn-requires-auth-middleware": "error",
       "eslint-local/no-pure-crud-server-fn": "error",
+      "node/no-process-env": "error",
       "eslint-tanstack-query/exhaustive-deps": "error",
       "eslint-tanstack-query/infinite-query-property-order": "error",
       "eslint-tanstack-query/mutation-property-order": "error",
@@ -106,6 +107,17 @@ export default defineConfig({
       "eslint-tanstack-router/create-route-property-order": "error",
       "eslint-tanstack-router/route-param-names": "error",
     },
+    // The ONLY files permitted to touch process.env:
+    // - packages/config/src/runtime.ts is the sanctioned reader (see @repo/config/AGENTS.md)
+    // - tests seed/read env vars as part of their harness
+    overrides: [
+      {
+        files: ["packages/config/src/runtime.ts", "**/*.test.ts", "**/*.spec.ts", "**/tests/**"],
+        rules: {
+          "node/no-process-env": "allow",
+        },
+      },
+    ],
     ignorePatterns: [
       "dist",
       ".wrangler",

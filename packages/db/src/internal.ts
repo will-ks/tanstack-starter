@@ -1,4 +1,6 @@
 import "@tanstack/react-start/server-only";
+import { runtimeConfig } from "@repo/config/runtime";
+
 import { getZenstackClient, type DatabaseClient } from "./index";
 
 declare global {
@@ -10,6 +12,6 @@ const db = globalThis.dbGlobal ?? getZenstackClient();
 
 export { db };
 
-if (process.env.NODE_ENV !== "production") {
+if (!runtimeConfig.isProduction) {
   globalThis.dbGlobal = db;
 }
