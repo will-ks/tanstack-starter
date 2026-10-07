@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vite-plus/test";
 
 import { greetingWorker } from "./greeting";
 
@@ -6,6 +6,12 @@ import { greetingWorker } from "./greeting";
 vi.mock("../boss", () => ({
   getBoss: vi.fn(),
   work: vi.fn(),
+}));
+
+// Mock logger — registerWorkers logs via @repo/logger (pino), not console.log
+const { mockLoggerInfo } = vi.hoisted(() => ({ mockLoggerInfo: vi.fn() }));
+vi.mock("@repo/logger", () => ({
+  createLogger: vi.fn(() => ({ info: mockLoggerInfo })),
 }));
 
 import { getBoss, work } from "../boss";
@@ -39,14 +45,10 @@ describe("registerWorkers", () => {
   });
 
   it("should log after registration", async () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-
     const { registerWorkers } = await import("./index");
 
     await registerWorkers();
 
-    expect(logSpy).toHaveBeenCalledWith("[jobs] workers registered");
-
-    logSpy.mockRestore();
+    expect(mockLoggerInfo).toHaveBeenCalledWith({ queues: ["greeting"] }, "workers registered");
   });
 });

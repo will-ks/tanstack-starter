@@ -1,9 +1,19 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 vi.mock("@repo/jobs", () => ({
   getBoss: vi.fn().mockResolvedValue({}),
   registerWorkers: vi.fn().mockResolvedValue(undefined),
   stopBoss: vi.fn().mockResolvedValue(undefined),
+}));
+
+// Mock runtime config — assertRuntimeConfig() fail-fasts on missing env vars in tests
+vi.mock("@repo/config/runtime", () => ({
+  assertRuntimeConfig: vi.fn(),
+}));
+
+// Mock logger to keep tests hermetic (pino writes to stdout)
+vi.mock("@repo/logger", () => ({
+  createLogger: vi.fn(() => ({ info: vi.fn() })),
 }));
 
 import { getBoss, registerWorkers, stopBoss } from "@repo/jobs";

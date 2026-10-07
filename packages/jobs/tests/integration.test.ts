@@ -1,5 +1,5 @@
 import { PgBoss } from "pg-boss";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vite-plus/test";
 
 const TEST_DATABASE_URL = process.env.TEST_DATABASE_URL;
 const skipIntegration = !TEST_DATABASE_URL;
