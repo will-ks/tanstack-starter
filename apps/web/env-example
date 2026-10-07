@@ -1,28 +1,15 @@
-# Environment variable reference
-# Copy the variables you need into your local .env file (never commit secrets).
-#
-# Required variables are validated at server boot by @repo/config/runtime —
-# the app crashes with a precise error message when one is missing.
-# Enforced by Oxlint's node/no-process-env: never read process.env anywhere else.
-
 # ── Required (server, fail-fast at boot) ──────────────────────────────
 
 # PostgreSQL connection string
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/mydb
+DATABASE_URL=postgresql://postgres:password@localhost:5432/tanstack-starter
 
 # Better Auth session signing secret — generate with: pnpm auth:secret
-BETTER_AUTH_SECRET=
+BETTER_AUTH_SECRET=11dda57c6b59e983b5b5af254184aaf860483ec53fb700c4d3258965b9393fab
 
 # Polar billing (polar.sh → Dashboard → Settings → API)
-POLAR_ACCESS_TOKEN=
+POLAR_ACCESS_TOKEN=replace-me
 # Polar webhook secret (polar.sh → Dashboard → Developers → Webhooks)
-POLAR_WEBHOOK_SECRET=
-
-# OAuth providers
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
+POLAR_WEBHOOK_SECRET=replace-me
 
 # ── Required (public, build-time inlined into the client bundle) ──────
 # VITE_-prefixed vars are read via @repo/config/build. Only put values here

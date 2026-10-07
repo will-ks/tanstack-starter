@@ -82,18 +82,6 @@ export const auth = betterAuth({
     },
   },
 
-  // https://www.better-auth.com/docs/concepts/oauth
-  socialProviders: {
-    github: {
-      clientId: runtimeConfig.githubClientId,
-      clientSecret: runtimeConfig.githubClientSecret,
-    },
-    google: {
-      clientId: runtimeConfig.googleClientId,
-      clientSecret: runtimeConfig.googleClientSecret,
-    },
-  },
-
   // Auto-create a personal organization for each new user and set it as
   // the active organization on every new session.
   databaseHooks: {

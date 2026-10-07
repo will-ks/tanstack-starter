@@ -107,7 +107,7 @@ A monorepo starter for 🏝️ TanStack Start, based on [mugnavo/tanstarter](htt
 
 1. Clone the repo
 
-2. Create `.env` files in [`/apps/web`](./apps/web/.env.example) and [`/packages/db`](./packages/db/.env.example) based on their respective `.env.example` files.
+2. Create `.env` files in [`/apps/web`](apps/web/env-example) and [`/packages/db`](packages/db/env-example) based on their respective `env-example` files.
 
 3. Generate the TypeScript types from your schema, then push to your database:
 

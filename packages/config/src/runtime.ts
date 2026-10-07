@@ -39,18 +39,6 @@ export const runtimeConfig = {
   get polarWebhookSecret() {
     return requireEnv("POLAR_WEBHOOK_SECRET");
   },
-  get githubClientId() {
-    return requireEnv("GITHUB_CLIENT_ID");
-  },
-  get githubClientSecret() {
-    return requireEnv("GITHUB_CLIENT_SECRET");
-  },
-  get googleClientId() {
-    return requireEnv("GOOGLE_CLIENT_ID");
-  },
-  get googleClientSecret() {
-    return requireEnv("GOOGLE_CLIENT_SECRET");
-  },
   get polarServer() {
     return process.env.POLAR_SERVER === "production" ? "production" : "sandbox";
   },

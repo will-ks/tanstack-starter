@@ -1,0 +1,2 @@
+# For Zenstack migrations
+DATABASE_URL="postgresql://postgres:password@localhost:5432/tanstack-starter"
