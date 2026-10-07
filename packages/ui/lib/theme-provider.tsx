@@ -14,12 +14,7 @@ type ThemeProviderState = {
   setTheme: (theme: Theme) => void;
 };
 
-const initialState: ThemeProviderState = {
-  theme: "system",
-  setTheme: () => null,
-};
-
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined);
 
 // references:
 // https://ui.shadcn.com/docs/dark-mode/vite
@@ -56,7 +51,9 @@ export function ThemeProvider({
     media.addEventListener("change", handleMediaQuery);
     handleMediaQuery(media);
 
-    return () => media.removeEventListener("change", handleMediaQuery);
+    return () => {
+      media.removeEventListener("change", handleMediaQuery);
+    };
   }, [handleMediaQuery]);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_auth")({
       ...authQueryOptions(),
       revalidateIfStale: true,
     });
-    if (!authResult?.user) {
+    if (!authResult.user) {
       throw redirect({ to: "/login" });
     }
 

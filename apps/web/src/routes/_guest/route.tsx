@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_guest")({
       ...authQueryOptions(),
       revalidateIfStale: true,
     });
-    if (authResult?.user) {
+    if (authResult.user) {
       throw redirect({
         to: REDIRECT_URL,
       });

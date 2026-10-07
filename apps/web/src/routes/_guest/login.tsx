@@ -58,7 +58,7 @@ function LoginForm() {
     },
   });
 
-  const handleSendOtp = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendOtp = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSending) return;
     const formData = new FormData(e.currentTarget);
@@ -68,7 +68,7 @@ function LoginForm() {
     sendOtpMutate(userEmail);
   };
 
-  const handleVerify = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleVerify = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isVerifying || !otp) return;
     verifyMutate();
@@ -100,7 +100,9 @@ function LoginForm() {
                   type="email"
                   placeholder="hello@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   readOnly={isSending}
                   required
                 />
@@ -155,7 +157,9 @@ function LoginForm() {
                     maxLength={6}
                     autoComplete="one-time-code"
                     value={otp}
-                    onChange={(value) => setOtp(value)}
+                    onChange={(value) => {
+                      setOtp(value);
+                    }}
                     disabled={isVerifying}
                   >
                     <InputOTPGroup>

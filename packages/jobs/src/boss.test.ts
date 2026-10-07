@@ -1,5 +1,5 @@
 import { PgBoss } from "pg-boss";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
 vi.mock("pg-boss", () => {
   const mockStart = vi.fn().mockResolvedValue(undefined);
@@ -8,8 +8,15 @@ vi.mock("pg-boss", () => {
   const mockWork = vi.fn().mockResolvedValue("worker-id-456");
   const mockOn = vi.fn();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const MockPgBoss = vi.fn(function (this: any) {
+  interface MockBossInstance {
+    start: Mock;
+    stop: Mock;
+    send: Mock;
+    work: Mock;
+    on: Mock;
+  }
+
+  const MockPgBoss = vi.fn(function (this: MockBossInstance) {
     this.start = mockStart;
     this.stop = mockStop;
     this.send = mockSend;
@@ -124,7 +131,7 @@ describe("boss", () => {
   describe("work", () => {
     it("should register a worker without options", async () => {
       const { work } = await import("./boss");
-      const handler = async () => undefined;
+      const handler = () => Promise.resolve(undefined);
       const workerId = await work("test-queue", handler);
 
       const { getBoss } = await import("./boss");
@@ -137,7 +144,7 @@ describe("boss", () => {
 
     it("should pass options when provided", async () => {
       const { work } = await import("./boss");
-      const handler = async () => undefined;
+      const handler = () => Promise.resolve(undefined);
       const options = { batchSize: 5 };
       await work("test-queue", handler, options);
 

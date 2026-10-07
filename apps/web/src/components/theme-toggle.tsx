@@ -21,19 +21,25 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end">
         <DropdownMenuCheckboxItem
           checked={theme === "light"}
-          onCheckedChange={(v) => v && setTheme("light")}
+          onCheckedChange={(v) => {
+            if (v) setTheme("light");
+          }}
         >
           Light
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={theme === "dark"}
-          onCheckedChange={(v) => v && setTheme("dark")}
+          onCheckedChange={(v) => {
+            if (v) setTheme("dark");
+          }}
         >
           Dark
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           checked={theme === "system"}
-          onCheckedChange={(v) => v && setTheme("system")}
+          onCheckedChange={(v) => {
+            if (v) setTheme("system");
+          }}
         >
           System
         </DropdownMenuCheckboxItem>

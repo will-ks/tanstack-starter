@@ -9,10 +9,10 @@ export function SignOutButton() {
   const router = useRouter();
   return (
     <Button
-      onClick={async () => {
-        await authClient.signOut({
+      onClick={() => {
+        void authClient.signOut({
           fetchOptions: {
-            onResponse: async () => {
+            onResponse: () => {
               // manually set to null to avoid unnecessary refetching
               queryClient.setQueryData(authQueryOptions().queryKey, {
                 user: null,
@@ -20,7 +20,7 @@ export function SignOutButton() {
                 organizationRole: null,
                 plan: null,
               });
-              await router.invalidate();
+              void router.invalidate();
             },
           },
         });

@@ -4,8 +4,8 @@
  * Otherwise, returns the argument asserted as NonNullable.
  * @throws {Error} If the first argument is null or undefined.
  */
-export function getAsserted<T extends unknown>(
-  assertedValue: T,
+export function getAsserted<T>(
+  assertedValue: T | null | undefined,
   options: {
     name?: string;
     errorConstructor?: ErrorConstructor;
@@ -16,5 +16,5 @@ export function getAsserted<T extends unknown>(
     throw new errorConstructor(`${name} is null or undefined`);
   }
 
-  return assertedValue as NonNullable<T>;
+  return assertedValue;
 }

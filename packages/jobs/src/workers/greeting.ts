@@ -8,10 +8,10 @@ export interface GreetingPayload {
   name: string;
 }
 
-export const greetingWorker: WorkHandler<GreetingPayload> = async ([job]) => {
+export const greetingWorker: WorkHandler<GreetingPayload> = ([job]) => {
   const { name } = job.data;
 
   logger.info({ jobId: job.id, name }, "greeting processed");
 
-  return { greeted: true, name };
+  return Promise.resolve({ greeted: true, name });
 };

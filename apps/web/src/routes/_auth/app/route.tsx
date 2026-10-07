@@ -28,7 +28,7 @@ function AppLayout() {
 
       <div className="flex w-full max-w-3xl flex-wrap justify-between gap-2 text-sm">
         <div className="flex flex-col gap-0.5">
-          what's next? maybe a sidebar?
+          what&apos;s next? maybe a sidebar?
           <span className="rounded-md border bg-card px-2 py-1 font-mono text-xs text-card-foreground">
             pnpm ui add sidebar
           </span>

@@ -37,7 +37,9 @@ export function SignInSocialButton(props: SocialLoginButtonProps) {
       className="w-full"
       type="button"
       disabled={mutation.isSuccess || mutation.isPending || props.disabled}
-      onClick={() => mutation.mutate()}
+      onClick={() => {
+        mutation.mutate();
+      }}
     >
       {props.icon}
       Login with {providerLabel}

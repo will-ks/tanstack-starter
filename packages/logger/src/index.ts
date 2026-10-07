@@ -23,17 +23,17 @@ export function createLogger(opts: CreateLoggerOptions = {}): Logger {
   const isDev = !runtimeConfig.isProduction;
 
   const logger = isDev
-    ? pino(
-        options,
-        pino.transport({
+    ? pino({
+        ...options,
+        transport: {
           target: "pino-pretty",
           options: {
             colorize: true,
             translateTime: "SYS:HH:MM:ss.l",
             ignore: "pid,hostname",
           },
-        }),
-      )
+        },
+      })
     : pino(options);
 
   return logger as Logger;

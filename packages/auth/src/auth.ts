@@ -12,6 +12,17 @@ import { tanstackStartCookies } from "better-auth/tanstack-start";
 
 const logger = createLogger({ name: "auth" });
 
+/**
+ * Polar webhook callbacks must return `Promise<void>`, but only log — so this
+ * builds a non-async handler returning an already-resolved promise.
+ */
+const logSubscriptionEvent =
+  (message: string) =>
+  (payload: object): Promise<void> => {
+    logger.info({ payload }, message);
+    return Promise.resolve();
+  };
+
 export const polarClient = new Polar({
   accessToken: runtimeConfig.polarAccessToken,
   server: runtimeConfig.polarServer,
@@ -54,18 +65,10 @@ export const auth = betterAuth({
         }),
         webhooks({
           secret: runtimeConfig.polarWebhookSecret,
-          onSubscriptionCreated: async (payload) => {
-            logger.info({ payload }, "polar subscription created");
-          },
-          onSubscriptionActive: async (payload) => {
-            logger.info({ payload }, "polar subscription active");
-          },
-          onSubscriptionCanceled: async (payload) => {
-            logger.info({ payload }, "polar subscription canceled");
-          },
-          onSubscriptionRevoked: async (payload) => {
-            logger.info({ payload }, "polar subscription revoked");
-          },
+          onSubscriptionCreated: logSubscriptionEvent("polar subscription created"),
+          onSubscriptionActive: logSubscriptionEvent("polar subscription active"),
+          onSubscriptionCanceled: logSubscriptionEvent("polar subscription canceled"),
+          onSubscriptionRevoked: logSubscriptionEvent("polar subscription revoked"),
         }),
       ],
     }),
@@ -106,7 +109,7 @@ export const auth = betterAuth({
             take: 1,
           });
 
-          const firstOrg = memberships[0];
+          const firstOrg = memberships.at(0);
 
           if (firstOrg) {
             logger.debug(

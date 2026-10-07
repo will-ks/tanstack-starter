@@ -30,7 +30,9 @@ function JobsPage() {
       </p>
 
       <Button
-        onClick={() => greetingMutation.mutate()}
+        onClick={() => {
+          greetingMutation.mutate();
+        }}
         disabled={greetingMutation.isPending}
         size="sm"
       >

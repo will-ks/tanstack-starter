@@ -18,10 +18,14 @@ function BillingPage() {
   const { currentPlan, availablePlans } = billingData;
 
   const checkoutMutation = useMutation({
+    // oxlint's type service fails to resolve the polar client plugin types and reports them
+    // as `error`, though tsc type-checks this cleanly. Verified with: tsc --noEmit -p apps/web
+    // eslint-disable-next-line typescript-eslint/no-unsafe-call, typescript-eslint/no-unsafe-return -- reason: oxlint false positive on @polar-sh/better-auth client types
     mutationFn: (productId: string) => authClient.checkout({ products: [productId] }),
   });
 
   const portalMutation = useMutation({
+    // eslint-disable-next-line typescript-eslint/no-unsafe-call, typescript-eslint/no-unsafe-return -- reason: oxlint false positive on @polar-sh/better-auth client types
     mutationFn: () => authClient.customer.portal(),
   });
 
@@ -90,7 +94,9 @@ function BillingPage() {
           size="sm"
           variant="outline"
           disabled={portalMutation.isPending}
-          onClick={() => portalMutation.mutate()}
+          onClick={() => {
+            portalMutation.mutate();
+          }}
         >
           {portalMutation.isPending ? "Opening..." : "Open Billing Portal"}
         </Button>

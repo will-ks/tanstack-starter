@@ -25,8 +25,8 @@ describe.skipIf(skipIntegration)("jobs integration", () => {
   it("should create a queue and process a greeting job", async () => {
     await boss.createQueue("greeting-integration");
 
-    const greetingWorker = async (jobs: { id: string; data: { name: string } }[]) => {
-      return { greeted: true, name: jobs[0].data.name };
+    const greetingWorker = (jobs: { id: string; data: { name: string } }[]) => {
+      return Promise.resolve({ greeted: true, name: jobs[0].data.name });
     };
 
     await boss.work("greeting-integration", greetingWorker);
@@ -43,12 +43,12 @@ describe.skipIf(skipIntegration)("jobs integration", () => {
     await boss.createQueue("failing-integration");
 
     let callCount = 0;
-    await boss.work("failing-integration", async () => {
+    await boss.work("failing-integration", () => {
       callCount++;
       if (callCount === 1) {
-        throw new Error("intentional test failure");
+        return Promise.reject(new Error("intentional test failure"));
       }
-      return { success: true };
+      return Promise.resolve({ success: true });
     });
 
     await boss.send(

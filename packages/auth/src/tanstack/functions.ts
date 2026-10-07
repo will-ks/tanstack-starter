@@ -27,13 +27,13 @@ export const _getUser = createServerOnlyFn(async (query?: GetUserServerQuery) =>
     returnHeaders: true,
   });
 
-  const cookies = session.headers?.getSetCookie();
-  if (cookies?.length) {
+  const cookies = session.headers.getSetCookie();
+  if (cookies.length) {
     setResponseHeader("Set-Cookie", cookies);
   }
 
   const user = session.response?.user || null;
-  const organizationId = session.response?.session?.activeOrganizationId ?? null;
+  const organizationId = session.response?.session.activeOrganizationId ?? null;
 
   let organizationRole: string | null = null;
   let plan: { id: string; slug: string; name: string } | null = null;
@@ -48,7 +48,7 @@ export const _getUser = createServerOnlyFn(async (query?: GetUserServerQuery) =>
         include: { plan: { select: { id: true, slug: true, name: true } } },
       }),
     ]);
-    const myMember = org?.members?.find((m) => m.userId === user.id);
+    const myMember = org?.members.find((m) => m.userId === user.id);
     organizationRole = myMember?.role ?? null;
     plan = dbOrg?.plan ?? null;
   }

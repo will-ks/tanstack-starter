@@ -23,8 +23,8 @@ export function DefaultCatchBoundary({ error }: Readonly<ErrorComponentProps>) {
       <div className="flex flex-wrap items-center gap-2">
         <Button
           type="button"
-          onClick={async () => {
-            await router.invalidate();
+          onClick={() => {
+            void router.invalidate();
           }}
         >
           Try Again
